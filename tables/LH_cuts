@@ -1,0 +1,34 @@
+rich_2011_more_theta_2
+	Pion:
+		LH(pi) > LH(k)
+		LH(pi) > LH(p)
+		LH(pi) > LH(bgn)
+	Kaon:
+		LH(k) > 1.08*LH(pi)
+		LH(k) > LH(p)
+		LH(k) > 1.24*LH(bgn)
+	Proton (p>p_thr):
+		LH(p) > LH(pi)
+		LH(p) > LH(k)
+		LH(p) > LH(bgn)
+	Proton (p<p_thr):
+		LH(bgn) < LH(pi)
+		LH(bgn) < LH(k)
+
+
+rich_2011_lh07
+	Pion:
+		LH(pi) > LH(k)
+		LH(pi) > LH(p)
+		LH(pi) > LH(bgn)
+	Kaon:
+		LH(k) > LH(pi)
+		LH(k) > LH(p)
+		LH(k) > 1.07*LH(bgn)
+	Proton (p>p_thr):
+		LH(p) > LH(pi)
+		LH(p) > LH(k)
+		LH(p) > LH(bgn)
+	Proton (p<p_thr):
+		LH(bgn) < LH(pi)
+		LH(bgn) < LH(k)

@@ -1,0 +1,73 @@
+# data file containing the reconstructed informations
+#data_file: ../in_root06/rho/2006_rho_small.root
+data_file: ../in_root06/rho/rho_2bin_high.root
+
+# data file containing the histograms
+hist_file: hist_rho.root
+
+# data file containing the histograms
+hist_file_phi: sel_2/hist_incl_phi2.root
+hist_file_k0: sel_1/hist_k0_lambda.root
+hist_file_lam: sel_1/hist_k0_lambda.root
+# hist_file_rho: sel_rho/hist_rho.root
+hist_file_rho: hist_rho.root
+#hist_file_rho: sel_rho/hist_rho_1.root
+# hist_file_rho: sel_rho/hist_rho_2.root
+# hist_file_rho: sel_rho/hist_rho_3.root
+# hist_file_rho: sel_rho/hist_rho_4.root
+
+# z cuts for rho0
+rho_zlow: 0.
+rho_zhigh: 1.
+
+# data file containing the final results
+out_file: rich.root
+
+# remove the rich pipe from the sample
+remove_richpipe: true
+
+# difference allowed between proton threshold and real value
+thr_diff: 5
+
+# Options for LH cuts for identifying pions
+LH_pi_K: 1.02
+LH_pi_p: 1.02
+# LH_pi_e:
+# LH_pi_mu:
+LH_pi_bg: 2.02
+
+
+# Options for LH cuts for identifying kaons
+LH_K_pi: 1.08
+LH_K_p: 1.08
+# LH_K_e:
+# LH_K_mu:
+LH_K_bg: 2.08
+
+
+# Options for LH cuts for identifying protons below threshold ( comparing with bg )
+LH_bthr_p_pi: 1.
+LH_bthr_p_K: 1.
+# LH_bthr_p_pi: 0.495
+# LH_bthr_p_K: 0.478
+# LH_bthr_p_p:
+# LH_bthr_p_e:
+# LH_bthr_p_mu:
+
+
+# Options for LH cuts for identifying protons above threshold	
+LH_athr_p_pi: 1.
+LH_athr_p_K: 1.
+# LH_athr_p_e:
+# LH_athr_p_mu:
+LH_athr_p_bg: 1.
+
+# Change the maximum number of fit attempts when results for the fractions are at the limit of their range
+max_retry: 20
+
+# Line width of the fit in the fit results
+line_width: 2
+
+sidebins: false
+
+
