@@ -1,18 +1,18 @@
 # type of analysis (K0L or iPhi)
-analysis: K0L
+analysis: iPhi
 
 # data file containing the reconstructed informations
-data_file: ../RichKL
+data_file: ../RichiP
 
 # data file template name
-data_template: RichKL
+data_template: RichiP
 
 # data file template name
 data_firstfile_nb: 275478
 data_lastfile_nb: 275907
 
 # data file containing the histograms TODO supress it
-fit_type: pi
+fit_type: all
 
 # data file containing the histograms
 hist_file_phi: ./hist_incl_phi2.root

@@ -43,6 +43,7 @@
 #include <RooPlot.h>
 #include <RooPolynomial.h>
 #include <RooRealVar.h>
+#include <RooBreitWigner.h>
 #include <RooRelBreitWigner.hh>
 #include <RooSimultaneous.h>
 #include <RooVoigtian.h>

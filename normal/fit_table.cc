@@ -6,7 +6,7 @@
 // produce the RICH Table with pi,k,p
 //
 // ******************************************************************************************
-const int start = 4;
+const int start = 0;
 const int stop = 6;
 
 /**********************************************************************/
@@ -63,13 +63,31 @@ int main(int argc, char *argv[]){
 	if( mode == "fit"){
 		read_options();
 		get_plots();
-		
-		fit_table_k0(0); // pi-
-		fit_table_k0(1); // pi+
-		fit_table_phi(0); // k-
-		fit_table_phi(1); // k+
-		fit_table_lambda(0); // p-
-		fit_table_lambda(1); // p+
+
+		if(fit_type=="all")
+		{
+			fit_table_k0(0); // pi-
+			fit_table_k0(1); // pi+
+			fit_table_phi(0); // k-
+			fit_table_phi(1); // k+
+			fit_table_lambda(0); // p-
+			fit_table_lambda(1); // p+
+		}
+		else if(fit_type=="pi")
+		{
+			fit_table_k0(0); // pi-
+			fit_table_k0(1); // pi+
+		}
+		else if(fit_type=="k")
+		{
+			fit_table_phi(0); // k-
+			fit_table_phi(1); // k+
+		}
+		else if(fit_type=="p")
+		{
+			fit_table_lambda(0); // p-
+			fit_table_lambda(1); // p+
+		}
 
 	 	print_table();
 
@@ -177,8 +195,6 @@ void read_options(){
 		}
 	}
 	data_nb = data_lf_nb-data_ff_nb;
-	cout << data_ff_nb << " "  << data_lf_nb << " " << data_nb << endl;
-	cout << endl;
 	// cout << rpipe << endl;
 	stream.close();
 }
@@ -1234,7 +1250,8 @@ void fit_table_phi(int cc){
 			RooRealVar d1("d1","d1",1.);
 			RooRealVar d2("d2","d2",0.4937);
 
-			RooRelBreitWigner sb("sb","relBW",x,mean,width,d1,d1,d2,d2);
+			// RooRelBreitWigner sb("sb","relBW",x,mean,width,d1,d1,d2,d2);
+			RooBreitWigner sb("sb","relBW",x,mean,width);
 			RooGaussian sg("sg","gauss",x,mean,sigma);
 //
 //
@@ -1271,7 +1288,7 @@ void fit_table_phi(int cc){
 
 			//Construct composite pdf
 			Int_t ent = h[2+cc][0][p][t]->GetEntries(); //[p][t]
-// 			RooRealVar N_a_s("N_a_s","N_a_s1",0.8*ent,0.,1.05*ent) ;
+			// RooRealVar N_a_s("N_a_s","N_a_s1",0.8*ent,0.,1.05*ent) ;
 			RooRealVar N_a_b("N_a_b","N_a_b",0.2*ent,0.,1.05*ent) ;
 
 			ent = h[2+cc][1][p][t]->GetEntries(); //[p][t]
@@ -1291,7 +1308,7 @@ void fit_table_phi(int cc){
 			RooRealVar N_u_s("N_u_s","N_u_s",0.77*ent,0.,1.05*ent) ;
 			RooRealVar N_u_b("N_u_b","N_u_b",0.23*ent,0.,1.05*ent) ;
 			RooFormulaVar N_a_s("N_a_s","N_pi_s + N_k_s + N_p_s + N_u_s",RooArgSet(N_pi_s,N_k_s,N_p_s,N_u_s));
-// 			RooFormulaVar N_a_b("N_a_b","N_pi_b + N_k_b + N_p_b + N_u_b",RooArgSet(N_pi_b,N_k_b,N_p_b,N_u_b));
+			// RooFormulaVar N_a_b("N_a_b","N_pi_b + N_k_b + N_p_b + N_u_b",RooArgSet(N_pi_b,N_k_b,N_p_b,N_u_b));
 
 			//bedingung nur für t = 2
 
@@ -1348,7 +1365,7 @@ void fit_table_phi(int cc){
 
 			RooAddPdf model_all("model_all","model_all",RooArgList(sig,bgn1),RooArgList(N_a_s,N_a_b)) ;
 			RooAddPdf model_pi("model_pi","model_pi",RooArgList(sig,bgn2),RooArgList(N_pi_s,N_pi_b)) ;
-			RooAddPdf model_k("model_k","model_k",*lst_k_pdf,RooArgList(N_k_s,N_k_b)) ;
+			RooAddPdf model_k("model_k","model_k",RooArgList(sig,bgn3),RooArgList(N_k_s,N_k_b)) ;
 			RooAddPdf model_p("model_p","model_p",RooArgList(sig,bgn1),RooArgList(N_p_s,N_p_b)) ;
 			RooAddPdf model_unk("model_unk","model_unk",RooArgList(sig,bgn1),RooArgList(N_u_s,N_u_b)) ;
 
@@ -1381,8 +1398,8 @@ void fit_table_phi(int cc){
 
 			if(!use_sidebins){
 
-// 				RooFormulaVar restriction("restriction","100000*((TMath::Abs(1 - (N_pi_s + N_k_s + N_p_s + N_u_s)/N_a_s) > 1e-4) )",RooArgSet(N_a_s,N_pi_s,N_k_s,N_p_s,N_u_s));
-				RooFormulaVar restriction("restriction","0",RooArgSet());
+				RooFormulaVar restriction("restriction","100000*((TMath::Abs(1 - (N_pi_s + N_k_s + N_p_s + N_u_s)/N_a_s) > 1e-4) )",RooArgSet(N_a_s,N_pi_s,N_k_s,N_p_s,N_u_s));
+				// RooFormulaVar restriction("restriction","0",RooArgSet());
 
 				RooAbsReal* nll = simPdf.createNLL(combData,Extended(true));
 				RooAddition nll_r("nll_r","nll_r",RooArgSet(*nll,restriction)) ;
@@ -1418,7 +1435,7 @@ void fit_table_phi(int cc){
 
 					minu.hesse();
 // 					if( (p> Np-5 || p<4) && !(cc==1 && p ==2) && !(cc == 1 && p == Np-2) )
-						minu.simplex();
+					minu.simplex();
 					minu.migrad();
 					minu.improve();
 					minu.hesse();
