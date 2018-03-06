@@ -1250,11 +1250,10 @@ void fit_table_phi(int cc){
 			RooRealVar d1("d1","d1",1.);
 			RooRealVar d2("d2","d2",0.4937);
 
-			// RooRelBreitWigner sb("sb","relBW",x,mean,width,d1,d1,d2,d2);
-			RooBreitWigner sb("sb","relBW",x,mean,width);
+			RooRelBreitWigner sb("sb","relBW",x,mean,width,d1,d2,d2,d1);
 			RooGaussian sg("sg","gauss",x,mean,sigma);
-//
-//
+
+
 			RooFFTConvPdf sig("sig","sig",x,sb,sg);
 			sig.setShift(0,0);
 
