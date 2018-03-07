@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
 	delete tt;
 	delete ttt;
 	delete tttt;
-	
+
 	// draw1();
 	// draw2();
 	// draw3();
@@ -72,12 +72,12 @@ void draw1(){
 	TFile * f = new TFile("eff_2007_matrix_1.00.root","read");
 
 	stringstream nn;
-	
+
 // 	hpos0 = eff (pi+->pi+)
 // 	hpos1 =      K+->pi+
 // 	hpos2 =      pi+->K+
 // 	hpos3 =      K+->K+
-	
+
 	string name[2] = {"hpos","hneg"};
 
 	TH2D* h2;
@@ -86,49 +86,49 @@ void draw1(){
 	vector<double> eff_r[2][4][7];
 	double th[8];
 	for(int c = 0; c<2; c++){ // + , -
-		for(int i = 0; i<4; i++){  
+		for(int i = 0; i<4; i++){
 			nn.str("");
 			nn.clear();
 			nn << name[c] << i;
-			
+
 			h2= (TH2D*)f->Get(nn.str().c_str());
 			for(int bx = 1; bx <= h2->GetXaxis()->GetNbins(); bx++){
 				for(int by = 1; by <= h2->GetYaxis()->GetNbins(); by++){
-					
+
 					if( h2->GetXaxis()->GetBinCenter(bx) < 10. || h2->GetXaxis()->GetBinCenter(bx) > 50.0 ) continue;
 					th[by-1] = h2->GetYaxis()->GetBinLowEdge(by) ;
 					th[by] = h2->GetYaxis()->GetBinUpEdge(by) ;
 					mom[c][i][by-1].push_back(h2->GetXaxis()->GetBinCenter(bx));
 					eff[c][i][by-1].push_back(h2->GetBinContent(bx,by));
 					eff_r[c][i][by-1].push_back(h2->GetBinError(bx,by));
-					
+
 				}
 			}
 		}
 	}
-	
+
 	TCanvas* c1 = new TCanvas("c1","",800,600);
 	set_plot_style();
 	int col[14];
 	TH2F* palpal = new TH2F("palpal","",2,0,1,1,0,1);
-	
+
 	palpal->Fill(0.005,0.1);
-	
+
 	TLegend* leg= new TLegend(0.15,0.15,0.35,0.49);
 	leg->SetLineColor(0);
 	leg->SetNColumns(1);
 	leg->SetFillStyle(0);
 	leg->SetTextSize(0.039);
-	
-	
-	
+
+
+
 	palpal->Draw("colz");
 	gPad->Update();
-	
+
 	gPad->Update();
 	TPaletteAxis *palette = (TPaletteAxis*)palpal->GetListOfFunctions()->FindObject("palette");
 	for(int i = 0; i< 7;i++) col[i] = palette->GetValueColor(i/6.3);
-	
+
 	TGraphErrors* gr[2][4][7];
 	for(int c = 0; c<2; c++){ // + , -
 		for(int i = 0; i<4; i++){  // pi, K , p
@@ -143,23 +143,23 @@ void draw1(){
 				nn.clear();
 				nn<< th[k] << " < #theta < " << th[k+1];
 				if(c == 0 && i ==0)leg->AddEntry(gr[c][i][k], nn.str().c_str(),	"p");
-				
+
 			}
 		}
 	}
-	
+
 	TH1F* hr;
-	
+
 	string charge[2] = {"p","m"};
 	string charge2[2] = {"+","-"};
 	string is[4] = {"pi","k","pi","k"};
 	string id[4] = {"pi","pi","k","k"};
 	string is2[4] = {"#pi","k","#pi","k"};
 	string id2[4] = {"#pi","#pi","k","k"};
-	
+
 	for(int c = 0; c<2; c++){ // + , -
 		for(int i = 0; i<4; i++){  // pi, K , p
-			
+
 			c1->Clear();
 			hr = c1->DrawFrame(10,0,50,1);
 			hr->GetXaxis()->SetTitleOffset(0.9);
@@ -167,12 +167,12 @@ void draw1(){
 			hr->GetXaxis()->SetLabelSize(0.05);
 			hr->GetXaxis()->SetTitle("p (GeV/#it{c})");
 			hr->GetXaxis()->SetNdivisions(504);
-			
+
 			hr->GetYaxis()->SetTitleOffset(0.9);
 			hr->GetYaxis()->SetTitleSize(0.05);
 			hr->GetYaxis()->SetLabelSize(0.05);
 			hr->GetYaxis()->SetNdivisions(504);
-						
+
 			nn.str("");
 			nn << "Eff("<<is2[i] << "^{" <<charge2[c] <<"} #rightarrow " <<id2[i] <<")";
 			hr->GetYaxis()->SetTitle(nn.str().c_str());
@@ -186,8 +186,8 @@ void draw1(){
 			delete hr;
 		}
 	}
-	
-	
+
+
 	delete c1;
 }
 
@@ -196,7 +196,7 @@ void draw2(){
 	TFile * f = new TFile("rich_2011.root","read");
 
 	stringstream nn;
-	
+
 	// string name[2] = {"hpos","hneg"};
 
 	string charge[2] = {"p","m"};
@@ -205,10 +205,10 @@ void draw2(){
 	string id[4] = {"pi","k","p","u"};
 	string is2[3] = {"#pi","k","p"};
 	string id2[4] = {"#pi","k","p","unk"};
-	
+
 	TGraphErrors* gr[2][3][4][4];
 	double th[5] = {0,0.01,0.04,0.12,0.3};
-	
+
 	for(int c = 0; c<2; c++){ // + , -
 		for(int i = 0; i<3; i++){  //pi, k ,p
 			for(int j = 0; j<4; j++){  //pi, k ,p, u
@@ -218,34 +218,34 @@ void draw2(){
 					nn << is[i] << "_" << charge[c] << "_" << id[j]  << "_" << t;
 					cout << nn.str().c_str() << endl;
 					gr[c][i][j][t]= (TGraphErrors*)f->Get(nn.str().c_str());
-					
+
 				}
 			}
 		}
 	}
-	
+
 	TCanvas* c1 = new TCanvas("c1","",800,600);
 	set_plot_style();
 	int col[4];
 	TH2F* palpal = new TH2F("palpal","",2,0,1,1,0,1);
-	
+
 	palpal->Fill(0.005,0.1);
-	
+
 	TLegend* leg= new TLegend(0.15,0.15,0.35,0.49);
 	leg->SetLineColor(0);
 	leg->SetNColumns(1);
 	leg->SetFillStyle(0);
 	leg->SetTextSize(0.039);
-	
-	
-	
+
+
+
 	palpal->Draw("colz");
 	gPad->Update();
-	
+
 	gPad->Update();
 	TPaletteAxis *palette = (TPaletteAxis*)palpal->GetListOfFunctions()->FindObject("palette");
 	for(int i = 0; i< 4;i++) col[i] = palette->GetValueColor(i/4.3);
-	
+
 	for(int c = 0; c<2; c++){ // + , -
 		for(int i = 0; i<3; i++){  //pi, k ,p
 			for(int j = 0; j<4; j++){  //pi, k ,p, u
@@ -262,9 +262,9 @@ void draw2(){
 			}
 		}
 	}
-	
+
 	TH1F* hr;
-	
+
 	for(int c = 0; c<2; c++){ // + , -
 		for(int i = 0; i<3; i++){  //pi, k ,p
 			for(int j = 0; j<4; j++){  //pi, k ,p, u
@@ -275,12 +275,12 @@ void draw2(){
 				hr->GetXaxis()->SetLabelSize(0.05);
 				hr->GetXaxis()->SetTitle("p (GeV/#it{c})");
 				hr->GetXaxis()->SetNdivisions(504);
-				
+
 				hr->GetYaxis()->SetTitleOffset(0.9);
 				hr->GetYaxis()->SetTitleSize(0.05);
 				hr->GetYaxis()->SetLabelSize(0.05);
 				hr->GetYaxis()->SetNdivisions(504);
-							
+
 				nn.str("");
 				nn << "Eff("<<is2[i] << "^{" <<charge2[c] <<"} #rightarrow " <<id2[j] <<")";
 				hr->GetYaxis()->SetTitle(nn.str().c_str());
@@ -295,8 +295,8 @@ void draw2(){
 			}
 		}
 	}
-	
-	
+
+
 	delete c1;
 }
 
@@ -305,7 +305,7 @@ void draw3(){
 	TFile * f = new TFile("rich_2011_more_theta_2.root","read");
 
 	stringstream nn;
-	
+
 	// string name[2] = {"hpos","hneg"};
 
 	string charge[2] = {"p","m"};
@@ -314,10 +314,10 @@ void draw3(){
 	string id[4] = {"pi","k","p","u"};
 	string is2[3] = {"#pi","k","p"};
 	string id2[4] = {"#pi","k","p","noID"};
-	
+
 	TGraphErrors* gr[2][3][4][4];
 	double th[5] = {0,0.01,0.04,0.12,0.3};
-	
+
 	for(int c = 0; c<2; c++){ // + , -
 		for(int i = 0; i<3; i++){  //pi, k ,p
 			for(int j = 0; j<4; j++){  //pi, k ,p, u
@@ -327,59 +327,59 @@ void draw3(){
 					nn << is[i] << "_" << charge[c] << "_" << id[j]  << "_" << t;
 					cout << nn.str().c_str() << endl;
 					gr[c][i][j][t]= (TGraphErrors*)f->Get(nn.str().c_str());
-					
+
 				}
 			}
 		}
 	}
-	
+
 	TCanvas* c1 = new TCanvas("c1","",800,600);
 	set_plot_style();
 	int col[4];
 	TH2F* palpal = new TH2F("palpal","",2,0,1,1,0,1);
-	
+
 	palpal->Fill(0.005,0.1);
-	
+
 	TLegend* leg= new TLegend(0.15,0.15,0.35,0.49);
 	leg->SetLineColor(0);
 	leg->SetNColumns(1);
 	leg->SetFillStyle(0);
 	leg->SetTextSize(0.039);
-	
-	
-	
+
+
+
 	palpal->Draw("colz");
 	gPad->Update();
-	
+
 	gPad->Update();
 	TPaletteAxis *palette = (TPaletteAxis*)palpal->GetListOfFunctions()->FindObject("palette");
 	// for(int i = 0; i< 4;i++) col[i] = palette->GetValueColor(i/4.3);
 	for(int i = 0; i< 4;i++) col[i] = palette->GetValueColor(i/4.1);
-	
+
 	double min[3][4] = {
 		{0.5,0.,0.,0.},
 		{0.,0.,0.,0.},
 		{0.,0.,0.,0.}
 	};
-	
+
 	double max[3][4] = {
 		{1,0.3,0.3,0.3},
 		{0.5,1.,0.5,0.5},
 		{0.65,0.3,1.,0.3}
 	};
-	
+
 	double leg_x[3][4] = {
 		{0.15,0.15,0.15,0.15},
 		{0.40,0.40,0.40,0.40},
 		{0.60,0.60,0.60,0.60}
 	};
-	
+
 	double leg_y[3][4] = {
 		{0.15,0.5,0.5,0.5},
 		{0.55,0.15,0.55,0.55},
 		{0.55,0.55,0.15,0.55},
 	};
-	
+
 	for(int c = 0; c<2; c++){ // + , -
 		for(int i = 0; i<3; i++){  //pi, k ,p
 			for(int j = 0; j<4; j++){  //pi, k ,p, u
@@ -402,7 +402,7 @@ void draw3(){
 			}
 		}
 	}
-	
+
 	TH1F* hr;
 	TLatex *lat = new TLatex();
 	lat->SetNDC();
@@ -413,7 +413,7 @@ void draw3(){
 			for(int j = 0; j<4; j++){  //pi, k ,p, u
 				c1->Clear();
 				hr = c1->DrawFrame(10,min[i][j],50,max[i][j]);
-				
+
 				leg->SetX1NDC(leg_x[i][j]);
 				leg->SetX2NDC(leg_x[i][j]+0.2);
 				leg->SetY1NDC(leg_y[i][j]);
@@ -423,12 +423,12 @@ void draw3(){
 				hr->GetXaxis()->SetLabelSize(0.05);
 				hr->GetXaxis()->SetTitle("p (GeV/#it{c})");
 				hr->GetXaxis()->SetNdivisions(504);
-				
+
 				hr->GetYaxis()->SetTitleOffset(0.9);
 				hr->GetYaxis()->SetTitleSize(0.05);
 				hr->GetYaxis()->SetLabelSize(0.05);
 				hr->GetYaxis()->SetNdivisions(504);
-							
+
 				nn.str("");
 				if(is[i] != "p")nn << "#epsilon("<<is2[i] << "^{" <<charge2[c] <<"} #rightarrow " <<id2[j] <<")";
 				else{
@@ -448,17 +448,17 @@ void draw3(){
 			}
 		}
 	}
-	
-	
+
+
 	delete c1;
 }
 
 /**********************************************************************/
 void draw4(){
-	TFile * f = new TFile("rich_2011_lh07.root","read");
+	TFile * f = new TFile("../normal/rich.root","read");
 
 	stringstream nn;
-	
+
 	// string name[2] = {"hpos","hneg"};
 
 	string charge[2] = {"p","m"};
@@ -467,10 +467,10 @@ void draw4(){
 	string id[4] = {"pi","k","p","u"};
 	string is2[3] = {"#pi","k","p"};
 	string id2[4] = {"#pi","k","p","noID"};
-	
+
 	TGraphErrors* gr[2][3][4][4];
 	double th[5] = {0,0.01,0.04,0.12,0.3};
-	
+
 	for(int c = 0; c<2; c++){ // + , -
 		for(int i = 0; i<3; i++){  //pi, k ,p
 			for(int j = 0; j<4; j++){  //pi, k ,p, u
@@ -480,59 +480,59 @@ void draw4(){
 					nn << is[i] << "_" << charge[c] << "_" << id[j]  << "_" << t;
 					cout << nn.str().c_str() << endl;
 					gr[c][i][j][t]= (TGraphErrors*)f->Get(nn.str().c_str());
-					
+
 				}
 			}
 		}
 	}
-	
+
 	TCanvas* c1 = new TCanvas("c1","",800,600);
 	set_plot_style();
 	int col[4];
 	TH2F* palpal = new TH2F("palpal","",2,0,1,1,0,1);
-	
+
 	palpal->Fill(0.005,0.1);
-	
+
 	TLegend* leg= new TLegend(0.15,0.15,0.35,0.49);
 	leg->SetLineColor(0);
 	leg->SetNColumns(1);
 	leg->SetFillStyle(0);
 	leg->SetTextSize(0.039);
-	
-	
-	
+
+
+
 	palpal->Draw("colz");
 	gPad->Update();
-	
+
 	gPad->Update();
 	TPaletteAxis *palette = (TPaletteAxis*)palpal->GetListOfFunctions()->FindObject("palette");
 	// for(int i = 0; i< 4;i++) col[i] = palette->GetValueColor(i/4.3);
 	for(int i = 0; i< 4;i++) col[i] = palette->GetValueColor(i/4.1);
-	
+
 	double min[3][4] = {
 		{0.5,0.,0.,0.},
 		{0.,0.,0.,0.},
 		{0.,0.,0.,0.}
 	};
-	
+
 	double max[3][4] = {
 		{1,0.4,0.3,0.1},
 		{0.5,1.,0.5,0.15},
 		{0.65,0.3,1.,0.1}
 	};
-	
+
 	double leg_x[3][4] = {
 		{0.15,0.15,0.15,0.15},
 		{0.40,0.40,0.40,0.40},
 		{0.60,0.60,0.60,0.60}
 	};
-	
+
 	double leg_y[3][4] = {
 		{0.15,0.5,0.5,0.5},
 		{0.55,0.15,0.55,0.55},
 		{0.55,0.55,0.15,0.55},
 	};
-	
+
 	for(int c = 0; c<2; c++){ // + , -
 		for(int i = 0; i<3; i++){  //pi, k ,p
 			for(int j = 0; j<4; j++){  //pi, k ,p, u
@@ -555,7 +555,7 @@ void draw4(){
 			}
 		}
 	}
-	
+
 	TH1F* hr;
 	TLatex *lat = new TLatex();
 	lat->SetNDC();
@@ -566,7 +566,7 @@ void draw4(){
 			for(int j = 0; j<4; j++){  //pi, k ,p, u
 				c1->Clear();
 				hr = c1->DrawFrame(10,min[i][j],50,max[i][j]);
-				
+
 				leg->SetX1NDC(leg_x[i][j]);
 				leg->SetX2NDC(leg_x[i][j]+0.2);
 				leg->SetY1NDC(leg_y[i][j]);
@@ -576,12 +576,12 @@ void draw4(){
 				hr->GetXaxis()->SetLabelSize(0.05);
 				hr->GetXaxis()->SetTitle("p (GeV/#it{c})");
 				hr->GetXaxis()->SetNdivisions(504);
-				
+
 				hr->GetYaxis()->SetTitleOffset(0.9);
 				hr->GetYaxis()->SetTitleSize(0.05);
 				hr->GetYaxis()->SetLabelSize(0.05);
 				hr->GetYaxis()->SetNdivisions(504);
-							
+
 				nn.str("");
 				if(is[i] != "p")nn << "#epsilon("<<is2[i] << "^{" <<charge2[c] <<"} #rightarrow " <<id2[j] <<")";
 				else{
@@ -595,14 +595,14 @@ void draw4(){
 					gr[c][i][j][t]->Draw("lp");
 				}
 				nn.str("");
-				nn << "rich_fig/2011_lh07/plot_11_lh07_" << is[i] << charge[c] << "_" << id[j] << ".pdf";
+				nn << "rich_fig/plot_16_" << is[i] << charge[c] << "_" << id[j] << ".pdf";
 				c1->Print(nn.str().c_str());
 				delete hr;
 			}
 		}
 	}
-	
-	
+
+
 	delete c1;
 }
 
