@@ -285,12 +285,14 @@ void write_hist(){
 						nn.str("");
 						nn.clear();
 						nn << "h_" << chan[i] << "_" << id[j] << "_" << p <<"_" <<t;
-						((TH1D*)elder->Get(nn.str().c_str()))->Write();
+						// ((TH1D*)elder->Get(nn.str().c_str()))->Write();
+						((TH1D*)h[i][j][p][t])->Write();
 
 						nn.str("");
 						nn.clear();
 						nn << "am_" << chan[i] << "_" << id[j] << "_" << p <<"_" <<t;
-						((TH2D*)elder->Get(nn.str().c_str()))->Write();
+						// ((TH2D*)elder->Get(nn.str().c_str()))->Write();
+						((TH2D*)h2[i][j][p][t])->Write();
 					}
 				}
 			}
@@ -306,12 +308,14 @@ void write_hist(){
 						nn.str("");
 						nn.clear();
 						nn << "h_" << chan[i] << "_" << id[j] << "_" << p <<"_" <<t;
-						((TH1D*)elder->Get(nn.str().c_str()))->Write();
+						// ((TH1D*)elder->Get(nn.str().c_str()))->Write();
+						((TH1D*)h[i][j][p][t])->Write();
 
 						nn.str("");
 						nn.clear();
 						nn << "am_" << chan[i] << "_" << id[j] << "_" << p <<"_" <<t;
-						((TH2D*)elder->Get(nn.str().c_str()))->Write();
+						// ((TH2D*)elder->Get(nn.str().c_str()))->Write();
+						((TH2D*)h2[i][j][p][t])->Write();
 					}
 				}
 			}
@@ -328,12 +332,15 @@ void write_hist(){
 						nn.str("");
 						nn.clear();
 						nn << "h_" << chan[i] << "_" << id[j] << "_" << p <<"_" <<t;
-						((TH1D*)elder->Get(nn.str().c_str()))->Write();
+						// (TH1D*)elder->Get(nn.str().c_str());
+						((TH1D*)h[i][j][p][t])->Write();
+						//h->Write();
 
 						nn.str("");
 						nn.clear();
 						nn << "am_" << chan[i] << "_" << id[j] << "_" << p <<"_" <<t;
-						((TH2D*)elder->Get(nn.str().c_str()))->Write();
+						// ((TH2D*)elder->Get(nn.str().c_str()))->Write();
+						((TH2D*)h2[i][j][p][t])->Write();
 					}
 				}
 			}
