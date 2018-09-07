@@ -89,6 +89,10 @@ void UserEvent13010(PaEvent& e)
 	TargetCell* fTcell;
 	fTcell = new TargetCell();
 
+	int fVertex =0;
+	int fCells=0;
+	int fY=0;
+
 	static bool first(true);
 	if(first){
 
@@ -224,6 +228,7 @@ void UserEvent13010(PaEvent& e)
 		const PaVertex& v = e.vVertex(iv);
 		if(! v.IsPrimary()) continue; // not primary. Skip.
 		if(Bvtx !=-1 && Bvtx != iv) continue;
+		fVertex++;
 
 		vx = v.X();
 		vy = v.Y();
@@ -239,8 +244,8 @@ void UserEvent13010(PaEvent& e)
 		const PaTPar& par_beam = pa_beam.ParInVtx(iv);
 		const PaTPar& par_scat = pa_scat.ParInVtx(iv);
 
-		//if( !fTcell->TargetCell::InTarget(par_beam,Run) ) continue;  THIS FUNCTION IS FUCKED UP. TODO SEE WHY
     if( !fTcell->TargetCell::CrossCells(par_beam, Run)) continue;
+		fCells++;
 		lv_beam = par_beam.LzVec(m_mu);
 		lv_scat = par_scat.LzVec(m_mu);
 		lv_gamma = lv_beam - lv_scat;
@@ -249,6 +254,7 @@ void UserEvent13010(PaEvent& e)
 		xbj = PaAlgo::xbj(lv_beam, lv_scat);
 		y = (lv_beam.E()-lv_scat.E())/lv_beam.E();
 		if(y<0.1 || y>0.9) continue;
+		fY++;
 		for(Int_t iv2 = 0; iv2 < e.NVertex(); iv2++){
 			const PaVertex& v2 = e.vVertex(iv2);
 			if(v2.IsPrimary()) continue;
@@ -438,6 +444,8 @@ void UserEvent13010(PaEvent& e)
 		tree2->Fill();
 		*/
 	}
+
+	cout << fVertex << "\n" << fCell << "\n" << fY << endl;
 
 }
 

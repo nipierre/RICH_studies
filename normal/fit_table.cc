@@ -416,8 +416,8 @@ void get_input_data_t1(){
 	tree->SetBranchAddress("pp_theta",&pp_theta);
 	tree->SetBranchAddress("pm_theta",&pm_theta);
 
-	cout << nentries1  << endl;
-	cout << "tree 1" << endl;
+	// cout << nentries1  << endl;
+	// cout << "tree 1" << endl;
 	for (Long64_t jentry=0; jentry<nentries1;jentry++) {
 
 		tree->GetEntry(jentry);
@@ -586,7 +586,6 @@ void get_input_data_t1(){
 		}
 
 	}
-	cout << 11 << endl;
 
 	delete tree;
 }
@@ -596,8 +595,8 @@ void get_input_data_t2(){
 	TTree *tree2 = (TTree*)input->Get("tree2");
 	Long64_t nentries2 = tree2->GetEntries();
 
-	cout << nentries2  << endl;
-	cout << "tree 2" << endl;
+	// cout << nentries2  << endl;
+	// cout << "tree 2" << endl;
 
 //	TH2D* test_hist=new TH2D("test_hist","",200,-1,1,100,0.,0.3);
 

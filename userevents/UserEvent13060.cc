@@ -165,7 +165,6 @@ void UserEvent13060(PaEvent& e)
 		const PaTPar& par_beam = pa_beam.ParInVtx(iv);
 		const PaTPar& par_scat = pa_scat.ParInVtx(iv);
 
-		//if( !fTcell->TargetCell::InTarget(par_beam,Run) ) continue;  THIS FUNCTION IS FUCKED UP. TODO SEE WHY
     if( !fTcell->TargetCell::CrossCells(par_beam, Run)) continue;
 		lv_beam = par_beam.LzVec(m_mu);
 		lv_scat = par_scat.LzVec(m_mu);

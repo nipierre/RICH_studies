@@ -41,7 +41,7 @@ LH_K_pi: 1.08
 LH_K_p: 1.08
 # LH_K_e:
 # LH_K_mu:
-LH_K_bg: 2.08
+LH_K_bg: 2.02
 
 
 # Options for LH cuts for identifying protons below threshold ( comparing with bg )
