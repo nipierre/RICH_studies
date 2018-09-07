@@ -29,19 +29,19 @@ remove_richpipe: true
 thr_diff: 5
 
 # Options for LH cuts for identifying pions
-LH_pi_K: 1.
-LH_pi_p: 1.
+LH_pi_K: 1.02
+LH_pi_p: 1.02
 # LH_pi_e:
 # LH_pi_mu:
-LH_pi_bg: 1.
+LH_pi_bg: 2.02
 
 
 # Options for LH cuts for identifying kaons
-LH_K_pi: 1.
-LH_K_p: 1.
+LH_K_pi: 1.08
+LH_K_p: 1.08
 # LH_K_e:
 # LH_K_mu:
-LH_K_bg: 1.07
+LH_K_bg: 2.08
 
 
 # Options for LH cuts for identifying protons below threshold ( comparing with bg )
@@ -68,3 +68,4 @@ max_retry: 100
 line_width: 2
 
 sidebins: false
+
