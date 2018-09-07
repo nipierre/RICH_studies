@@ -445,7 +445,7 @@ void UserEvent13010(PaEvent& e)
 		*/
 	}
 
-	cout << fVertex << "\n" << fCell << "\n" << fY << endl;
+	cout << fVertex << "\n" << fCells << "\n" << fY << endl;
 
 }
 
