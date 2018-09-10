@@ -305,7 +305,7 @@ void UserEvent13010(PaEvent& e)
 			if(ang >0.01) continue;
 			if(p1_mom.Pt(p3_mom) <0.023) continue;
 
-			if ( TMath::Abs( pv.Mag() ) / TMath::Sqrt( v.Cov(5) + v2.Cov(5) + v.Cov(2) + v2.Cov(2) + v.Cov(1) + v2.Cov(1) ) < 2.0) continue;
+			// if ( TMath::Abs( pv.Mag() ) / TMath::Sqrt( v.Cov(5) + v2.Cov(5) + v.Cov(2) + v2.Cov(2) + v.Cov(1) + v2.Cov(1) ) < 2.0) continue;
 
 
 			pt1 = p1_mom.Pt(p3_mom);
