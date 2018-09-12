@@ -1,5 +1,5 @@
 #include <fstream>
-#include <iomanip> 
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -39,36 +39,39 @@
 #include <RooGenericPdf.h>
 #include <RooGlobalFunc.h>
 #include <RooMinuit.h>
-#include <RooMy.h>
+//#include <RooMy.h>
 #include <RooPlot.h>
 #include <RooPolynomial.h>
 #include <RooRealVar.h>
-#include <RooRelBreitWigner.h>
+#include <RooBreitWigner.h>
+#include <RooRelBreitWigner.hh>
 #include <RooSimultaneous.h>
 #include <RooVoigtian.h>
 
 
 /*
- * 
+ *
  *	const TMatrixDSym& cor = r->correlationMatrix() ;
  *	const TMatrixDSym& cov = r->covarianceMatrix() ;
  *	// Print correlation, covariance matrix
  *	cor.Print() ;
  *	cov.Print() ;
- * 
- * 
+ *
+ *
  *	// Make list of model parameters
  *	RooArgSet* params = model.getParameters(x) ;
  *	// Write LaTex table to file
  *	params->printLatex(Sibling(*initParams),OutputFile("rf407_latextables.tex")) ;
- * 
- * 
- * 
+ *
+ *
+ *
  */
 
 
 
 // ******************************************************************************************
+
+using namespace std;
 
 using std::cout;
 using std::cerr;
@@ -92,11 +95,16 @@ using namespace RooFit ;
 // const double p_bins[Np+1]={10. ,15. ,20. ,25. ,30. ,40. ,50.};
 // const double t_bins[Nt+1]={0.00,0.01,0.02,0.03,0.04,0.06,0.09,0.12};
 
-const int Np = 13;
-const int Nt = 4;
-const double p_bins[Np+1]={10.,11.,12.,13.,15.,17.,19.,22.,25.,27.,30.,35.,40.,50.};
-const double t_bins[Nt+1]={0.00,0.01,0.04,0.12,0.3};
+// const int Np = 13;
+// const int Nt = 4;
+// const double p_bins[Np+1]={10.,11.,12.,13.,15.,17.,19.,22.,25.,27.,30.,35.,40.,50.};
+// const double t_bins[Nt+1]={0.00,0.01,0.04,0.12,0.3};
 // const double t_bins[Nt+1]={0.00,0.01,0.12};
+
+const int Np = 14;
+const int Nt = 2;
+const double p_bins[Np+1]={3.,5.,7.,10.,12.,13.,15.,17.,19.,22.,25.,27.,30.,35.,40.};
+const double t_bins[Nt+1]={0.01,0.04,0.12};
 
 // const int Np = 1;
 // const int Nt = 1;
@@ -109,7 +117,13 @@ double N_id[8][5][Np][Nt];
 double last_para[30];
 double last_para2[Np][Nt][30];
 
+string analysis;
 string data_file;
+string data_template;
+int data_ff_nb;
+int data_lf_nb;
+int data_nb;
+string fit_type;
 string hist_file = "hist.root";
 string hist_file_k0 = "hist.root";
 string hist_file_lam = "hist.root";
@@ -119,6 +133,7 @@ string out_file = "rich.root";
 double lh_cut[4][6];
 TH1D* h[8][6][Np][Nt];
 TH2D* h2[8][5][Np][Nt];
+TH2D* test_hist;
 RooFitResult *r[8][Np][Nt];
 int lw = 1;
 double thr_diff = 0.;
@@ -142,6 +157,7 @@ TFile* input_lam;
 // ******************************************************************************************
 
 int main(int, char**);
+bool get_inputFile(int pi);
 void read_options();
 void get_input_data_t1();
 void get_input_data_t2();

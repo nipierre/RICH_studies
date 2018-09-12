@@ -310,8 +310,7 @@ void UserEvent7102(PaEvent& e){
 
 		// RemoveBadMiddleTrigger7102(e, tr_scat);
 		TriggerMask = (e.TrigMask() & 0xffff);
-
-    //if( !fTcell->TargetCell::InTarget(par_beam,Run) ) continue;  THIS FUNCTION IS FUCKED UP. TODO SEE WHY
+    
     if( !fTcell->TargetCell::CrossCells(par_beam, Run)) continue;
 
 		vx = v.X();

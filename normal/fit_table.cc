@@ -108,7 +108,7 @@ bool get_inputFile(int pi)
 		return 0;
 }
 
-
+/**********************************************************************/
 void read_options(){
 	ifstream stream;
 	string var1, var2;
@@ -209,7 +209,6 @@ void read_options(){
 /**********************************************************************/
 void create_hist(){
 	input = new TFile(Form("%s/%s_%d.root",data_file.c_str(),data_template.c_str(),data_ff_nb),"READ");
-	elder = new TFile(Form("%s/%s_%d.root",data_file.c_str(),data_template.c_str(),data_ff_nb),"READ");
 	stringstream nn;
 
 	const string chan[6] = {"k0_pip","k0_pim","phi_kp","phi_km","lambda_pip","lambda_pim"};
@@ -226,6 +225,7 @@ void create_hist(){
 // 	const Double_t min[6]  = {0.44,0.44,0.98,0.98,1.10,1.10};
 // 	const Double_t max[6]  = {0.56,0.56,1.12,1.12,1.13,1.13};
 
+	test_hist=new TH2D("test_hist","",500,-1,1,500,0.,0.3);
 
 	for(int i = 0; i<6; i++){      //6
 		for(int j = 0; j<5; j++){  //4
@@ -348,6 +348,11 @@ void write_hist(){
 		output->Close();
 	}
 
+	TCanvas* c = new TCanvas("c","",800,600);
+	test_hist->Draw("col");
+	c->Print("test.C");
+	c->Print("test.pdf");
+
 	input->Close();
 }
 
@@ -416,7 +421,7 @@ void get_input_data_t1(){
 	tree->SetBranchAddress("pp_theta",&pp_theta);
 	tree->SetBranchAddress("pm_theta",&pm_theta);
 
-	// cout << nentries1  << endl;
+	cout << nentries1  << endl;
 	// cout << "tree 1" << endl;
 	for (Long64_t jentry=0; jentry<nentries1;jentry++) {
 
@@ -425,6 +430,8 @@ void get_input_data_t1(){
 		int p_bin_p = -1;
 		int t_bin_m = -1;
 		int t_bin_p = -1;
+
+		test_hist->Fill(alpha,pt1);
 
 // 		continue;
 		for(int i = 0 ; i<Np; i++){
@@ -595,12 +602,8 @@ void get_input_data_t2(){
 	TTree *tree2 = (TTree*)input->Get("tree2");
 	Long64_t nentries2 = tree2->GetEntries();
 
-	// cout << nentries2  << endl;
+	cout << nentries2  << endl;
 	// cout << "tree 2" << endl;
-
-//	TH2D* test_hist=new TH2D("test_hist","",200,-1,1,100,0.,0.3);
-
-
 
 	double m_pi=0.139570;
 
@@ -708,12 +711,12 @@ void get_input_data_t2(){
 
 		lv_ks1 = lv_pim + *lv_kp;
 		lv_ks2 = lv_pip + *lv_km;
-//		cout << lv_pip.Mag() << " " << lv_pim.Mag() << " " << lv_ks.Mag() << endl;
-//		if(TMath::Abs(lv_ks1.Mag()-0.89166)>0.05){
-//			if(TMath::Abs(lv_ks2.Mag()-0.89166)>0.05){
-//				test_hist->Fill(alpha,pt1);
-//			}
-//		}
+		// cout << lv_pip.Mag() << " " << lv_pim.Mag() << " " << lv_ks.Mag() << endl;
+		if(TMath::Abs(lv_ks1.Mag()-0.89166)>0.05){
+			if(TMath::Abs(lv_ks2.Mag()-0.89166)>0.05){
+				test_hist->Fill(alpha,pt1);
+			}
+		}
 
 		int p_bin_m = -1;
 		int p_bin_p = -1;
@@ -855,11 +858,6 @@ void get_input_data_t2(){
 
 	}
 
-
-//	TCanvas* c = new TCanvas("c","",800,600);
-//	test_hist->Draw("col");
-//	c->Print("test.C");
-//	c->Print("test.pdf");
 	delete tree2;
 
 }
@@ -1215,8 +1213,8 @@ void fit_table_k0(int cc){
 			if(cc == 1) c->Print("test_k0_1.pdf");
 
 
-			// if(p==Np-1 && t == Nt-1){
-			if(p== 6 && t == Nt-1){
+			if(p==Np-1 && t == Nt-1){
+			// if(p== 6 && t == Nt-1){
 				if(cc == 0) c->Print("test_k0_0.pdf]");
 				else if(cc == 1) c->Print("test_k0_1.pdf]");
 			}
@@ -1640,8 +1638,8 @@ void fit_table_phi(int cc){
 			if(cc == 1) c->Print("test_phi_1.pdf");
 
 
-			// if(p==Np-1 && t == Nt-1){
-			if(p== 6 && t == Nt-1){
+			if(p==Np-1 && t == Nt-1){
+			// if(p== 6 && t == Nt-1){
 				if(cc == 0) c->Print("test_phi_0.pdf]");
 				else if(cc == 1) c->Print("test_phi_1.pdf]");
 			}
@@ -2179,8 +2177,8 @@ void fit_table_lambda(int cc){
 			if(cc == 0) c->Print("test_lambda_0.pdf");
 			if(cc == 1) c->Print("test_lambda_1.pdf");
 
-			// if(p==Np-1 && t == Nt-1){
-			if(p== 6 && t == Nt-1){
+			if(p==Np-1 && t == Nt-1){
+			// if(p== 6 && t == Nt-1){
 				if(cc == 0) c->Print("test_lambda_0.pdf]");
 				else if(cc == 1) c->Print("test_lambda_1.pdf]");
 			}

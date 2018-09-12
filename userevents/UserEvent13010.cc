@@ -223,7 +223,7 @@ void UserEvent13010(PaEvent& e)
 	for(int iv = 0; iv < e.NVertex(); iv++){ // loop over reconstructed vertices
 		const PaVertex& v = e.vVertex(iv);
 		if(! v.IsPrimary()) continue; // not primary. Skip.
-		if(Bvtx !=-1 && Bvtx == iv) continue;
+		if(Bvtx !=-1 && Bvtx != iv) continue;
 
 		vx = v.X();
 		vy = v.Y();
