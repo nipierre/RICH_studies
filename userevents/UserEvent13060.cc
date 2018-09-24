@@ -168,8 +168,8 @@ void UserEvent13060(PaEvent& e)
 		const PaTPar& par_beam = pa_beam.ParInVtx(iv);
 		const PaTPar& par_scat = pa_scat.ParInVtx(iv);
 
-		const PaParticle& track_beam = e.vTrack(pa_beam.iTrack());
-		const PaParticle& track_scat = e.vTrack(pa_scat.iTrack());
+		const PaTrack& track_beam = e.vTrack(pa_beam.iTrack());
+		const PaTrack& track_scat = e.vTrack(pa_scat.iTrack());
 
     if( !(fTcell->TargetCell::CrossCells(track_beam) && fTcell->TargetCell::InTarget(VertexMu0,1.9)) ) continue;
 		lv_beam = par_beam.LzVec(m_mu);

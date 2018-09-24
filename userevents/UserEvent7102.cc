@@ -310,8 +310,8 @@ void UserEvent7102(PaEvent& e){
 		// RemoveBadMiddleTrigger7102(e, tr_scat);
 		TriggerMask = (e.TrigMask() & 0xffff);
 
-    const PaParticle& track_beam = e.vTrack(pa_beam.iTrack());
-		const PaParticle& track_scat = e.vTrack(pa_scat.iTrack());
+    const PaTrack& track_beam = e.vTrack(pa_beam.iTrack());
+		const PaTrack& track_scat = e.vTrack(pa_scat.iTrack());
 
     if( !(fTcell->TargetCell::CrossCells(track_beam) && fTcell->TargetCell::InTarget(VertexMu0,1.9)) ) continue;
 
