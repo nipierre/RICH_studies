@@ -87,7 +87,7 @@ void UserEvent13010(PaEvent& e)
 //	static TH2D* h2;
 
 	TargetCell* fTcell;
-	fTcell = new TargetCell();
+	fTcell->Init();
 
 	static bool first(true);
 	if(first){
@@ -233,13 +233,19 @@ void UserEvent13010(PaEvent& e)
 		int imu1 = v.iMuPrim();
 		if(imu0 == -1) continue;
 		if(imu1 == -1) continue;
+
+		const PaVertex& VertexMu0 = e.vVertex(iv);
+
 		const PaParticle& pa_beam = e.vParticle(imu0);
 		const PaParticle& pa_scat = e.vParticle(imu1);
 
 		const PaTPar& par_beam = pa_beam.ParInVtx(iv);
 		const PaTPar& par_scat = pa_scat.ParInVtx(iv);
 
-    if( !fTcell->TargetCell::CrossCells(par_beam, Run)) continue;
+		const PaTrack& track_beam = e.vTrack(pa_beam.iTrack());
+		const PaTrack& track_scat = e.vTrack(pa_scat.iTrack());
+
+    if( !(fTcell->TargetCell::CrossCells(track_beam) && fTcell->TargetCell::InTarget(VertexMu0,1.9)) ) continue;
 		lv_beam = par_beam.LzVec(m_mu);
 		lv_scat = par_scat.LzVec(m_mu);
 		lv_gamma = lv_beam - lv_scat;

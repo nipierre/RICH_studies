@@ -226,7 +226,7 @@ void UserEvent7102(PaEvent& e){
 	const float m_rho = G3partMass[63];
 
   TargetCell* fTcell;
-	fTcell = new TargetCell();
+	fTcell->Init();
 
 	static bool first(true);
 	if(first){
@@ -299,19 +299,21 @@ void UserEvent7102(PaEvent& e){
 		if(ibeam ==-1) continue;
 		if(imu == -1) continue;
 
+    const PaVertex& VertexMu0 = e.vVertex(iv);
+
 		const PaParticle & pa_scat = e.vParticle(imu);
 		const PaParticle & pa_beam = e.vParticle(ibeam);
 
 		const PaTPar & par_scat = pa_scat.ParInVtx(iv);
 		const PaTPar & par_beam = pa_beam.ParInVtx(iv);
 
-		const PaTrack & tr_scat = e.vTrack(pa_scat.iTrack());
-		// const PaTrack & tr_beam = e.vTrack(pa_beam.iTrack());
-
 		// RemoveBadMiddleTrigger7102(e, tr_scat);
 		TriggerMask = (e.TrigMask() & 0xffff);
-    
-    if( !fTcell->TargetCell::CrossCells(par_beam, Run)) continue;
+
+    const PaTrack& track_beam = e.vTrack(pa_beam.iTrack());
+		const PaTrack& track_scat = e.vTrack(pa_scat.iTrack());
+
+    if( !(fTcell->TargetCell::CrossCells(track_beam) && fTcell->TargetCell::InTarget(VertexMu0,1.9)) ) continue;
 
 		vx = v.X();
 		vy = v.Y();
