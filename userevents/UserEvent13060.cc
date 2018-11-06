@@ -82,6 +82,7 @@ void UserEvent13060(PaEvent& e)
 //	static TH2D* h2;
 
 	TargetCell* fTcell;
+	fTcell = new TargetCell();
 	fTcell->Init();
 
 	static bool first(true);

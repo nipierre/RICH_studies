@@ -2381,7 +2381,7 @@ void print_table(){
 			nn << lable[i] <<" #rightarrow " << lable[2*(j-1)+i%2];//;id2[j-1];
 			hr->SetTitle(nn.str().c_str());
 			leg->Draw();
-			for(int t = 0 ; t< Nt; t++) gr[i][j-1][t]->Draw("pl0");
+			for(int t = 0 ; t< Nt; t++) gr[i][j-1][t]->Draw("pl");
 			nn.str("");
 			if(i%2 == 0) nn << "table/" << id[i/2] <<"/" << id[i/2] << "m_" << id[j-1] <<".pdf";
 			else nn << "table/" << id[i/2] <<"/" << id[i/2] << "p_" << id[j-1] <<".pdf";

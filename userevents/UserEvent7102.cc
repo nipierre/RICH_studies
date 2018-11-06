@@ -226,6 +226,7 @@ void UserEvent7102(PaEvent& e){
 	const float m_rho = G3partMass[63];
 
   TargetCell* fTcell;
+  fTcell = new TargetCell();
 	fTcell->Init();
 
 	static bool first(true);
