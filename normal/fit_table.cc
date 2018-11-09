@@ -2215,12 +2215,36 @@ void print_table(){
 	string id[4] = {"pi","k","p","u"};
 	Int_t color[4] = {kOrange+7,kAzure+4,kTeal+4,kYellow+2};
 
+	ofstream ofs_matrix("rich_mat.txt", std::ofstream::out | std::ofstream::trunc);
+
 	int color2[7] = {kRed, kOrange+7, kYellow+2, kSpring-6, kCyan-6, kAzure+3, kViolet-1};
 // 	double shift[3] = {-0.005,0,0.005};
 	// double shift[4] = {0.2,0.,0.1,0.3};
 	double shift[4] = {0.,0.1,0.2,0.3};
 
 	int cov_elem[4] = {6,2,4,8}; // pi,k,p,u
+
+	for(int p = 0; p< Np; p++)
+	{
+  	for(int t = 0; t< Nt; t++)
+		{
+			ofs_matrix << p << "\t" << t;
+			for(int i = start; i<stop; i++)
+			{
+				for(int j = 1; j<4; j++)
+				{
+					double val[Np],err[Np];
+					double aaa = N_id[i][j][p][t];
+					double ggg = N_id[i][1][p][t]+N_id[i][2][p][t]+N_id[i][3][p][t]+N_id[i][4][p][t];
+					val[p] = (ggg ? aaa/ggg : 0);
+					ofs_matrix << "\t" << val[p];
+				}
+			}
+			ofs_matrix << endl;
+		}
+	}
+
+	ofs_matrix.close();
 
 	for(int i = start; i<stop; i++) {  // particle (pi,k,p) 0,6
 		for(int t = 0; t< Nt; t++){
@@ -2313,6 +2337,7 @@ void print_table(){
 	leg->SetNColumns(1);
 	leg->SetFillStyle(0);
 
+
 	for(int t = 0; t< Nt; t++){
 		nn.str("");
 		nn << t_bins[t] <<"#leq #theta < " << t_bins[t+1];
@@ -2388,6 +2413,8 @@ void print_table(){
 			c->Print(nn.str().c_str());
 		}
 	}
+
+
 
 	c->Print("check_sum.pdf[");
 	for(int i = start; i<stop; i++) {  // particle (pi,k,p) 0,6
