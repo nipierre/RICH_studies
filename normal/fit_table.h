@@ -100,10 +100,10 @@ using namespace RooFit ;
 // const double p_bins[Np+1]={10.,11.,12.,13.,15.,17.,19.,22.,25.,27.,30.,35.,40.,50.};
 // const double t_bins[Nt+1]={0.00,0.01,0.04,0.12,0.3};
 
-const int Np = 14;
-const int Nt = 2;
-const double p_bins[Np+1]={3.,5.,7.,10.,12.,13.,15.,17.,19.,22.,25.,27.,30.,35.,40.};
-const double t_bins[Nt+1]={0.01,0.04,0.12};
+const int Np = 15;
+const int Nt = 4;
+const double p_bins[Np+1]={3.,5.,7.,10.,12.,13.,15.,17.,19.,22.,25.,27.,30.,35.,40.,50.};
+const double t_bins[Nt+1]={0.00,0.01,0.04,0.12,0.3};
 
 // const int Np = 1;
 // const int Nt = 1;

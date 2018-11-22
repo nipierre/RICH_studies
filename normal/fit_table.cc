@@ -1212,6 +1212,9 @@ void fit_table_k0(int cc){
 			if(cc == 0) c->Print("test_k0_0.pdf");
 			if(cc == 1) c->Print("test_k0_1.pdf");
 
+			if(cc == 0) c->Print(Form("test_k0_0_%d_%d.pdf",p,t));
+			if(cc == 1) c->Print(Form("test_k0_1_%d_%d.pdf",p,t));
+
 
 			if(p==Np-1 && t == Nt-1){
 			// if(p== 6 && t == Nt-1){
@@ -1465,7 +1468,7 @@ void fit_table_phi(int cc){
 			}
 
 
-// 			res_out << "t bin: " << t << " p bin: " << p << " Hesse0: " << hes0 <<" Migrad0: " << mig0<<" Migrad: " << mig << " Hesse: " << hes << " Minos: " << min  << "     " << h[2+cc][0][p][t]->GetEntries() -h[2+cc][1][p][t]->GetEntries() -h[2+cc][2][p][t]->GetEntries() -h[2+cc][3][p][t]->GetEntries() -h[2+cc][4][p][t]->GetEntries() <<"\n";
+			// res_out << "t bin: " << t << " p bin: " << p << " Hesse0: " << hes0 <<" Migrad0: " << mig0<<" Migrad: " << mig << " Hesse: " << hes << " Minos: " << min  << "     " << h[2+cc][0][p][t]->GetEntries() -h[2+cc][1][p][t]->GetEntries() -h[2+cc][2][p][t]->GetEntries() -h[2+cc][3][p][t]->GetEntries() -h[2+cc][4][p][t]->GetEntries() <<"\n";
 			N_id[2+cc][0][p][t] = N_a_s.getVal();
 			N_id[2+cc][1][p][t] = N_pi_s.getVal();
 			N_id[2+cc][2][p][t] = N_k_s.getVal();
@@ -1636,6 +1639,9 @@ void fit_table_phi(int cc){
 
 			if(cc == 0) c->Print("test_phi_0.pdf");
 			if(cc == 1) c->Print("test_phi_1.pdf");
+
+			if(cc == 0) c->Print(Form("test_phi_0_%d_%d.pdf",p,t));
+			if(cc == 1) c->Print(Form("test_phi_1_%d_%d.pdf",p,t));
 
 
 			if(p==Np-1 && t == Nt-1){
@@ -2177,6 +2183,9 @@ void fit_table_lambda(int cc){
 			if(cc == 0) c->Print("test_lambda_0.pdf");
 			if(cc == 1) c->Print("test_lambda_1.pdf");
 
+			if(cc == 0) c->Print(Form("test_lambda_0_%d_%d.pdf",p,t));
+			if(cc == 1) c->Print(Form("test_lambda_1_%d_%d.pdf",p,t));
+
 			if(p==Np-1 && t == Nt-1){
 			// if(p== 6 && t == Nt-1){
 				if(cc == 0) c->Print("test_lambda_0.pdf]");
@@ -2226,21 +2235,21 @@ void print_table(){
 
 	for(int p = 0; p< Np; p++)
 	{
-  	for(int t = 0; t< Nt; t++)
+  	for(int t = 1; t< 3; t++)
 		{
-			ofs_matrix << p << "\t" << t;
-			for(int i = start; i<stop; i++)
-			{
-				for(int j = 1; j<4; j++)
+				ofs_matrix << p << "\t" << t;
+				for(int i = start; i<stop; i++)
 				{
-					double val[Np],err[Np];
-					double aaa = N_id[i][j][p][t];
-					double ggg = N_id[i][1][p][t]+N_id[i][2][p][t]+N_id[i][3][p][t]+N_id[i][4][p][t];
-					val[p] = (ggg ? aaa/ggg : 0);
-					ofs_matrix << "\t" << val[p];
+					for(int j = 1; j<4; j++)
+					{
+						double val[Np],err[Np];
+						double aaa = N_id[i][j][p][t];
+						double ggg = N_id[i][1][p][t]+N_id[i][2][p][t]+N_id[i][3][p][t]+N_id[i][4][p][t];
+						val[p] = (ggg ? aaa/ggg : 0);
+						ofs_matrix << "\t" << val[p];
+					}
 				}
-			}
-			ofs_matrix << endl;
+				ofs_matrix << endl;
 		}
 	}
 
