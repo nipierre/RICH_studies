@@ -5,7 +5,7 @@ analysis: K0L
 data_file: ../RichKL
 
 # data file template name
-data_template: richKL
+data_template: RichKL
 
 # data file template name
 data_firstfile_nb: 274508
@@ -47,12 +47,15 @@ LH_K_bg: 1.24
 # Options for LH cuts for identifying protons below threshold ( comparing with bg )
 LH_bthr_p_pi: 1.
 LH_bthr_p_K: 1.
-# LH_bthr_p_pi: 2.2
-# LH_bthr_p_K: 2.9
 # LH_bthr_p_p:
 # LH_bthr_p_e:
 # LH_bthr_p_mu:
 
+# Options for LH cuts for identifying protons above threshold
+LH_bthr_p_pi_bg: 2.2
+LH_bthr_p_K_bg: 2.9
+LH_bthr_m_pi_bg: 2.1
+LH_bthr_m_K_bg: 2.8
 
 # Options for LH cuts for identifying protons above threshold
 LH_athr_p_pi: 1.

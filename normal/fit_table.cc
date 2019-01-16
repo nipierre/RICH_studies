@@ -113,7 +113,7 @@ void read_options(){
 	ifstream stream;
 	string var1, var2;
 
-	for(int i = 0; i<6; i++) for(int j = 0; j<4; j++)lh_cut[j][i] = -1;
+	for(int i = 0; i<6; i++) for(int j = 0; j<5; j++)lh_cut[j][i] = -1;
 
 	for(int i = 0; i<6; i++)
 		for(int j = 0; j<5; j++)
@@ -150,6 +150,11 @@ void read_options(){
 	opt["LH_athr_p_e:"]  = make_pair(3,3);
 	opt["LH_athr_p_mu:"] = make_pair(3,4);
 	opt["LH_athr_p_bg:"] = make_pair(3,5);
+
+	opt["LH_bthr_p_pi_bg:"] = make_pair(4,0);
+	opt["LH_bthr_p_K_bg:"]  = make_pair(4,1);
+	opt["LH_bthr_m_pi_bg:"] = make_pair(4,3);
+	opt["LH_bthr_m_K_bg:"]  = make_pair(4,4);
 
 	stream.open("options_fit.dat", ifstream::in);
 
@@ -462,14 +467,17 @@ void get_input_data_t1(){
 		const int id_lst[5] = {0,1,5,2,3};
 		if(lv_pip->Vect().Mag()>pi_thr){
 			for(int i = 0; i<4; i++){
-				if(lh_cut[i][0] == -1 || pp_lh[id_lst[i]] > lh_cut[i][0] * pp_lh[0]){
+				if(i == 3 && lv_pip->Vect().Mag()<p_thr-thr_diff && ( pp_lh[0] < lh_cut[4][0] * pp_lh[5] && pp_lh[1] < lh_cut[4][1] * pp_lh[5] )){
+					id_p = id_lst[i];
+				}
+				else if(lh_cut[i][0] == -1 || pp_lh[id_lst[i]] > lh_cut[i][0] * pp_lh[0]){
 					if(lh_cut[i][1] == -1 || pp_lh[id_lst[i]] > lh_cut[i][1] * pp_lh[1]){
 						if(lh_cut[i][2] == -1 || pp_lh[id_lst[i]] > lh_cut[i][2] * pp_lh[2]){
 							if(lh_cut[i][3] == -1 || pp_lh[id_lst[i]] > lh_cut[i][3] * pp_lh[3]){
 								if(lh_cut[i][4] == -1 || pp_lh[id_lst[i]] > lh_cut[i][4] * pp_lh[4]){
 									if(lh_cut[i][5] == -1 || pp_lh[id_lst[i]] > lh_cut[i][5] * pp_lh[5]){
 										if(i != 2 || (lv_pip->Vect().Mag()<=p_thr+thr_diff && id_p !=0 && id_p !=1)){
-											if(i != 3 || lv_pip->Vect().Mag()>p_thr-thr_diff){
+											if(i != 3 || lv_pip->Vect().Mag()>=p_thr+thr_diff || ( pp_lh[0] < lh_cut[4][0] * pp_lh[5] && pp_lh[1] < lh_cut[4][1] * pp_lh[5] )){
 												id_p = id_lst[i];
 											}
 										}
@@ -488,14 +496,17 @@ void get_input_data_t1(){
 		if( lv_pip->Vect().Mag() <= p_thr+thr_diff && pp_lh[0] == 0 && pp_lh[1] == 0 && pp_lh[2] == 0 && pp_lh[3] == 0 && pp_lh[4] == 0 && pp_lh[5] == 0) id_p = 5;
 		if(lv_pim->Vect().Mag()>pi_thr){
 			for(int i = 0; i<4; i++){
-				if(lh_cut[i][0] == -1 || pm_lh[id_lst[i]] > lh_cut[i][0] * pm_lh[0]){
+				if(i == 3 && lv_pim->Vect().Mag()<p_thr-thr_diff && ( pm_lh[0] < lh_cut[4][2] * pm_lh[5] && pm_lh[1] < lh_cut[4][3] * pm_lh[5] )){
+					id_m = id_lst[i];
+				}
+				else if(lh_cut[i][0] == -1 || pm_lh[id_lst[i]] > lh_cut[i][0] * pm_lh[0]){
 					if(lh_cut[i][1] == -1 || pm_lh[id_lst[i]] > lh_cut[i][1] * pm_lh[1]){
 						if(lh_cut[i][2] == -1 || pm_lh[id_lst[i]] > lh_cut[i][2] * pm_lh[2]){
 							if(lh_cut[i][3] == -1 || pm_lh[id_lst[i]] > lh_cut[i][3] * pm_lh[3]){
 								if(lh_cut[i][4] == -1 || pm_lh[id_lst[i]] > lh_cut[i][4] * pm_lh[4]){
 									if(lh_cut[i][5] == -1 || pm_lh[id_lst[i]] > lh_cut[i][5] * pm_lh[5]){
 										if(i != 2 || (lv_pim->Vect().Mag()<=p_thr+thr_diff && id_m !=0 && id_m !=1)){
-											if(i != 3 || lv_pim->Vect().Mag()>p_thr-thr_diff){
+											if(i != 3 || lv_pim->Vect().Mag()>p_thr+thr_diff || ( pm_lh[0] < lh_cut[4][2] * pm_lh[5] && pm_lh[1] < lh_cut[4][3] * pm_lh[5] )){
 												id_m = id_lst[i];
 											}
 										}
@@ -2242,11 +2253,11 @@ void print_table(){
 				{
 					for(int j = 1; j<4; j++)
 					{
-						double val[Np],err[Np];
+						double val;
 						double aaa = N_id[i][j][p][t];
 						double ggg = N_id[i][1][p][t]+N_id[i][2][p][t]+N_id[i][3][p][t]+N_id[i][4][p][t];
-						val[p] = (ggg ? aaa/ggg : 0);
-						ofs_matrix << "\t" << val[p];
+						val = (ggg ? aaa/ggg : 0);
+						ofs_matrix << "\t" << val;
 					}
 				}
 				ofs_matrix << endl;
@@ -2275,12 +2286,15 @@ void print_table(){
 			for(int t = 0; t< Nt; t++){
 // 			for(int t = 1; t< 2; t++){
 				double val[Np],err[Np];
+				cout << i << " " << j << " " << t << " ";
 				for(int p = 0; p< Np; p++){
 // 				for(int p = 0; p< 2; p++){
 					if(t==3 && p>6) continue;
 					double aaa = N_id[i][j][p][t];
 					double ggg = N_id[i][1][p][t]+N_id[i][2][p][t]+N_id[i][3][p][t]+N_id[i][4][p][t];
-					val[p] = aaa/ggg;
+					val[p] = (ggg ? aaa/ggg : 0);
+
+					cout << val[p] << " ";
 
 					double tmp = 0.;
 
@@ -2302,6 +2316,7 @@ void print_table(){
 					err[p] = TMath::Sqrt(tmp);
 					// err[p] = TMath::Sqrt((aaa+1)*(ggg-aaa+1)/( (ggg+2)*(ggg+2)*(ggg+3) ));
 				}
+				cout << endl;
 				if(t != 3)gr[i][j-1][t] = new TGraphErrors(Np,ppp,val,aa,err);
 				else if(t==3)gr[i][j-1][t] = new TGraphErrors(7,ppp,val,aa,err);
 				gr[i][j-1][t]->SetMarkerStyle(33);

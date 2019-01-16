@@ -127,7 +127,7 @@ string hist_file_k0 = "hist.root";
 string hist_file_lam = "hist.root";
 string hist_file_phi = "hist.root";
 string out_file = "rich.root";
-double lh_cut[4][6];
+double lh_cut[5][6];
 TH1D* h[6][5][Np][Nt];
 TH2D* h2[6][5][Np][Nt];
 TH2D* test_hist;

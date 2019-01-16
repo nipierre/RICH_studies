@@ -46,11 +46,10 @@ enum trigger{
 	TRand 	= 1 	<<11
 };
 
-
+static TTree* tree2(NULL);
 
 void UserEvent13060(PaEvent& e)
 {
-	static TTree* tree2(NULL);
 	static Long64_t Evt;
 	static int Run, TriggerMask;
 	static float vx, vy ,vz;
@@ -264,6 +263,7 @@ void UserEvent13060(PaEvent& e)
 
 	}
 
+	delete fTcell;
 }
 
 void UserJobEnd13060(){
@@ -271,5 +271,7 @@ void UserJobEnd13060(){
 
 	if(ph.print) cout<<"[ UserJobEnd0 has been called ]"<<endl;
 	ph.h_file->cd();
+
+	delete tree2;
 
 }
