@@ -153,8 +153,8 @@ void read_options(){
 
 	opt["LH_bthr_p_pi_bg:"] = make_pair(4,0);
 	opt["LH_bthr_p_K_bg:"]  = make_pair(4,1);
-	opt["LH_bthr_m_pi_bg:"] = make_pair(4,3);
-	opt["LH_bthr_m_K_bg:"]  = make_pair(4,4);
+	opt["LH_bthr_m_pi_bg:"] = make_pair(4,2);
+	opt["LH_bthr_m_K_bg:"]  = make_pair(4,3);
 
 	stream.open("options_fit.dat", ifstream::in);
 
@@ -490,10 +490,10 @@ void get_input_data_t1(){
 
 // 		if( lv_pip->Vect().Mag() <= p_thr+thr_diff && pp_lh[0] == -1 && pp_lh[1] == -1 && pp_lh[2] == -1 && pp_lh[3] == -1 && pp_lh[4] == -1 && pp_lh[5] == -1) id_p = 5;
 		if( pp_lh[0] == -1 && pp_lh[1] == -1 && pp_lh[2] == -1 && pp_lh[3] == -1 && pp_lh[4] == -1 && pp_lh[5] == -1) id_p = 3;
-		if( lv_pip->Vect().Mag() <= p_thr+thr_diff && pp_lh[0] == 0 && pp_lh[1] == 0 && pp_lh[2] == 0
-																							 && pp_lh[3] == 0 && pp_lh[4] == 0 && pp_lh[5] == 0
-																						   && pp_lh[0] < lh_cut[4][0] * pp_lh[5]
-																							 && pp_lh[1] < lh_cut[4][1] * pp_lh[5] ) id_p = 2;
+		if( lv_pip->Vect().Mag() <= p_thr+thr_diff && ((pp_lh[0] == 0 && pp_lh[1] == 0 && pp_lh[2] == 0
+																							 && pp_lh[3] == 0 && pp_lh[4] == 0 && pp_lh[5] == 0)
+																						   || (pp_lh[0] < lh_cut[4][0] * pp_lh[5]
+																							 && pp_lh[1] < lh_cut[4][1] * pp_lh[5])) ) id_p = 2;
 
 		if(lv_pim->Vect().Mag()>pi_thr){
 			for(int i = 0; i<4; i++){
@@ -504,7 +504,7 @@ void get_input_data_t1(){
 								if(lh_cut[i][4] == -1 || pm_lh[id_lst[i]] > lh_cut[i][4] * pm_lh[4]){
 									if(lh_cut[i][5] == -1 || pm_lh[id_lst[i]] > lh_cut[i][5] * pm_lh[5]){
 										if(i != 2 || (lv_pim->Vect().Mag()<=p_thr+thr_diff && id_m !=0 && id_m !=1)){
-											if(i != 3 || lv_pim->Vect().Mag()>p_thr-thr_diff){
+											if(i != 3 || lv_pim->Vect().Mag()>=p_thr-thr_diff){
 												id_m = id_lst[i];
 											}
 										}
@@ -519,10 +519,10 @@ void get_input_data_t1(){
 
 // 		if( lv_pim->Vect().Mag() <= p_thr+thr_diff && pm_lh[0] == -1 && pm_lh[1] == -1 && pm_lh[2] == -1 && pm_lh[3] == -1 && pm_lh[4] == -1 && pm_lh[5] == -1) id_m = 3;
 		if( pm_lh[0] == -1 && pm_lh[1] == -1 && pm_lh[2] == -1 && pm_lh[3] == -1 && pm_lh[4] == -1 && pm_lh[5] == -1) id_m = 3;
-		if( lv_pim->Vect().Mag() <= p_thr+thr_diff && pm_lh[0] == 0 && pm_lh[1] == 0 && pm_lh[2] == 0
-																							 && pm_lh[3] == 0 && pm_lh[4] == 0 && pm_lh[5] == 0
-																						   && pm_lh[0] < lh_cut[4][2] * pm_lh[5]
-																							 && pm_lh[1] < lh_cut[4][3] * pm_lh[5] ) id_m = 2;
+		if( lv_pim->Vect().Mag() <= p_thr+thr_diff && ((pm_lh[0] == 0 && pm_lh[1] == 0 && pm_lh[2] == 0
+																							 && pm_lh[3] == 0 && pm_lh[4] == 0 && pm_lh[5] == 0)
+																						   || (pm_lh[0] < lh_cut[4][2] * pm_lh[5]
+																							 && pm_lh[1] < lh_cut[4][3] * pm_lh[5])) ) id_m = 2;
 
 		if( (pp_lh[0] == -1 && pp_lh[1] == -1 && pp_lh[2] == -1 && pp_lh[3] == -1 && pp_lh[4] == -1 && pp_lh[5] == -1) || (pm_lh[0] == -1 && pm_lh[1] == -1 && pm_lh[2] == -1 && pm_lh[3] == -1 && pm_lh[4] == -1 && pm_lh[5] == -1)) continue;
 
@@ -784,10 +784,10 @@ void get_input_data_t2(){
 		}
 // 		if( lv_kp->Vect().Mag() <= p_thr2+thr_diff && pp_lh2[0] == -1 && pp_lh2[1] == -1 && pp_lh2[2] == -1 && pp_lh2[3] == -1 && pp_lh2[4] == -1 && pp_lh2[5] == -1) id_p = 5;
 		if( pp_lh2[0] == -1 && pp_lh2[1] == -1 && pp_lh2[2] == -1 && pp_lh2[3] == -1 && pp_lh2[4] == -1 && pp_lh2[5] == -1) id_p = 3;
-		if( lv_kp->Vect().Mag() <= p_thr2+thr_diff && pp_lh[0] == 0 && pm_lh[1] == 0 && pp_lh[2] == 0
-																							 && pp_lh[3] == 0 && pm_lh[4] == 0 && pp_lh[5] == 0
-																						   && pp_lh[0] < lh_cut[4][0] * pp_lh[5]
-																							 && pp_lh[1] < lh_cut[4][1] * pp_lh[5] ) id_p = 2;
+		if( lv_kp->Vect().Mag() <= p_thr2+thr_diff && ((pp_lh2[0] == 0 && pp_lh2[1] == 0 && pp_lh2[2] == 0
+																							 && pp_lh2[3] == 0 && pp_lh2[4] == 0 && pp_lh2[5] == 0)
+																						   || (pp_lh2[0] < lh_cut[4][0] * pp_lh2[5]
+																							 && pp_lh2[1] < lh_cut[4][1] * pp_lh2[5])) ) id_p = 2;
 // 		int des[4][8];
 // 		for(int kk = 0; kk<4; kk++){
 // 			for(int hh = 0 ; hh<8; hh++){
@@ -818,10 +818,10 @@ void get_input_data_t2(){
 
 // 		if( lv_km->Vect().Mag() <= p_thr2+thr_diff && pm_lh2[0] == -1 && pm_lh2[1] == -1 && pm_lh2[2] == -1 && pm_lh2[3] == -1 && pm_lh2[4] == -1 && pm_lh2[5] == -1) id_m = 5;
 		if( pm_lh2[0] == -1 && pm_lh2[1] == -1 && pm_lh2[2] == -1 && pm_lh2[3] == -1 && pm_lh2[4] == -1 && pm_lh2[5] == -1) id_m = 3;
-		if( lv_km->Vect().Mag() <= p_thr2+thr_diff && pm_lh[0] == 0 && pm_lh[1] == 0 && pm_lh[2] == 0
-																							 && pm_lh[3] == 0 && pm_lh[4] == 0 && pm_lh[5] == 0
-																						   && pm_lh[0] < lh_cut[4][2] * pm_lh[5]
-																							 && pm_lh[1] < lh_cut[4][3] * pm_lh[5] ) id_p = 2;
+		if( lv_km->Vect().Mag() <= p_thr2+thr_diff && ((pm_lh2[0] == 0 && pm_lh2[1] == 0 && pm_lh2[2] == 0
+																							 && pm_lh2[3] == 0 && pm_lh2[4] == 0 && pm_lh2[5] == 0)
+																						   || (pm_lh2[0] < lh_cut[4][2] * pm_lh2[5]
+																							 && pm_lh2[1] < lh_cut[4][3] * pm_lh2[5])) ) id_m = 2;
 
 		if( (pp_lh2[0] == -1 && pp_lh2[1] == -1 && pp_lh2[2] == -1 && pp_lh2[3] == -1 && pp_lh2[4] == -1 && pp_lh2[5] == -1) || (pm_lh2[0] == -1 && pm_lh2[1] == -1 && pm_lh2[2] == -1 && pm_lh2[3] == -1 && pm_lh2[4] == -1 && pm_lh2[5] == -1)) continue;
 
