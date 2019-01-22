@@ -426,4 +426,5 @@ void UserEvent7102(PaEvent& e){
 			}
 		}
 	}
+  delete fTcell;
 }
