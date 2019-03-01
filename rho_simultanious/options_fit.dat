@@ -1,15 +1,15 @@
 # type of analysis (K0L, iPhi or Rho)
-analysis: K0L
+analysis: Rho
 
 # data file containing the reconstructed informations
-data_file: ../RichKL
+data_file: ../Richrho
 
 # data file template name
-data_template: richKL
+data_template: richrho
 
 # data file template name
 data_firstfile_nb: 274508
-data_lastfile_nb: 275908
+data_lastfile_nb: 276408
 
 # Fit type
 fit_type: all
@@ -38,7 +38,7 @@ LH_pi_K: 1.02
 LH_pi_p: 1.02
 # LH_pi_e:
 # LH_pi_mu:
-LH_pi_bg: 2.02
+LH_pi_bg: 1.02
 
 
 # Options for LH cuts for identifying kaons
@@ -46,7 +46,7 @@ LH_K_pi: 1.08
 LH_K_p: 1.08
 # LH_K_e:
 # LH_K_mu:
-LH_K_bg: 2.08
+LH_K_bg: 1.08
 
 
 # Options for LH cuts for identifying protons below threshold ( comparing with bg )
@@ -60,6 +60,12 @@ LH_bthr_p_K: 1.
 
 
 # Options for LH cuts for identifying protons above threshold
+LH_bthr_p_pi_bg: 2.2
+LH_bthr_p_K_bg: 2.9
+LH_bthr_m_pi_bg: 2.1
+LH_bthr_m_K_bg: 2.8
+
+# Options for LH cuts for identifying protons above threshold
 LH_athr_p_pi: 1.
 LH_athr_p_K: 1.
 # LH_athr_p_e:
@@ -67,7 +73,7 @@ LH_athr_p_K: 1.
 LH_athr_p_bg: 1.
 
 # Change the maximum number of fit attempts when results for the fractions are at the limit of their range
-max_retry: 20
+max_retry: 100
 
 # Line width of the fit in the fit results
 line_width: 2
