@@ -2243,6 +2243,7 @@ void print_table(){
 	Int_t color[4] = {kOrange+7,kAzure+4,kTeal+4,kYellow+2};
 
 	ofstream ofs_matrix("rich_mat.txt", std::ofstream::out | std::ofstream::trunc);
+	ofstream ofs_err("rich_err.txt", std::ofstream::out | std::ofstream::trunc);
 
 	int color2[7] = {kRed, kOrange+7, kYellow+2, kSpring-6, kCyan-6, kAzure+3, kViolet-1};
 // 	double shift[3] = {-0.005,0,0.005};
@@ -2256,6 +2257,7 @@ void print_table(){
   	for(int t = 1; t< 3; t++)
 		{
 				ofs_matrix << p << "\t" << t;
+				ofs_err << p << "\t" << t;
 				for(int i = start; i<stop; i++)
 				{
 					for(int j = 1; j<4; j++)
@@ -2265,9 +2267,16 @@ void print_table(){
 						double ggg = N_id[i][1][p][t]+N_id[i][2][p][t]+N_id[i][3][p][t]+N_id[i][4][p][t];
 						val = (ggg ? aaa/ggg : 0);
 						ofs_matrix << "\t" << val;
+						ofs_err << "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[0]
+										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[1]
+										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[2],cov_elem[2];
+						ofs_err << "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[1]
+										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[2]
+										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[2];
 					}
 				}
 				ofs_matrix << endl;
+				ofs_err << endl;
 		}
 	}
 
