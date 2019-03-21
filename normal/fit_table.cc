@@ -2267,12 +2267,12 @@ void print_table(){
 						double ggg = N_id[i][1][p][t]+N_id[i][2][p][t]+N_id[i][3][p][t]+N_id[i][4][p][t];
 						val = (ggg ? aaa/ggg : 0);
 						ofs_matrix << "\t" << val;
-						ofs_err << "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[0]
-										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[1]
-										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[2],cov_elem[2];
-						ofs_err << "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[1]
-										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[2]
-										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[2];
+						ofs_err << "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[0])
+										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[1])
+										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[2],cov_elem[2]);
+						ofs_err << "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[1])
+										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[2])
+										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[2]);
 					}
 				}
 				ofs_matrix << endl;
@@ -2281,6 +2281,7 @@ void print_table(){
 	}
 
 	ofs_matrix.close();
+	ofs_err.close();
 
 	for(int i = start; i<stop; i++) {  // particle (pi,k,p) 0,6
 		for(int t = 0; t< Nt; t++){
