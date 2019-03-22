@@ -2258,6 +2258,7 @@ void print_table(){
 		{
 				ofs_matrix << p << "\t" << t;
 				ofs_err << p << "\t" << t;
+
 				for(int i = start; i<stop; i++)
 				{
 					for(int j = 1; j<4; j++)
@@ -2266,13 +2267,21 @@ void print_table(){
 						double aaa = N_id[i][j][p][t];
 						double ggg = N_id[i][1][p][t]+N_id[i][2][p][t]+N_id[i][3][p][t]+N_id[i][4][p][t];
 						val = (ggg ? aaa/ggg : 0);
+
+						double tmp_jak[4];
+
+						for(int ll=0; ll<4;ll++){
+							tmp_jak[ll] = -aaa/(ggg*ggg);
+							if(ll == j-1) tmp_jak[ll] += 1./ggg;
+						}
+
 						ofs_matrix << "\t" << val;
-						ofs_err << "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[0])
-										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[1])
-										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[2],cov_elem[2]);
-						ofs_err << "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[1])
-										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[2])
-										<< "\t" << r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[2]);
+						ofs_err << "\t" << tmp_jak[0]*tmp_jak[0]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[0])
+										<< "\t" << tmp_jak[1]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[1])
+										<< "\t" << tmp_jak[2]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[2],cov_elem[2]);
+						ofs_err << "\t" << tmp_jak[0]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[1])
+										<< "\t" << tmp_jak[0]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[2])
+										<< "\t" << tmp_jak[1]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[2]);
 					}
 				}
 				ofs_matrix << endl;
