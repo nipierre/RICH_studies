@@ -210,7 +210,7 @@ void UserEvent7102(PaEvent& e){
 	static Long64_t Evt;
 	static float vx, vy ,vz;
 	static double Q2, xbj, y;
-	static double Emiss, m_rho;
+	static double Emiss, mrho;
 	static TLorentzVector lv_beam, lv_scat, lv_pip, lv_pim, lv_rho;
 
 	static double pp_x, pp_y, pp_mom, pp_theta, pm_x, pm_y, pm_mom, pm_theta;
@@ -254,7 +254,7 @@ void UserEvent7102(PaEvent& e){
 		tree->Branch("lv_pip",			"TLorentzVector", 	&lv_pip);
 		tree->Branch("lv_pim",			"TLorentzVector", 	&lv_pim);
 		tree->Branch("lv_rho",			"TLorentzVector", 	&lv_rho);
-    tree->Branch("m_rho",       "TLorentzVector",   &m_rho);
+    tree->Branch("mrho",       &mrho,             "mrho/D");
 
 		tree->Branch("pp_pt",			&pp_pt,				"pp_pt/D");
 		tree->Branch("pm_pt",			&pm_pt,				"pm_pt/D");
@@ -391,7 +391,7 @@ void UserEvent7102(PaEvent& e){
 				if( TMath::Abs(lv_rho.Mag() - m_rho) >=0.25) continue;
 				if( (lv_kp+lv_km).Mag() <1.04) continue;
 
-        m_rho = lv_rho.Mag();
+        mrho = lv_rho.Mag();
 
 				for(int i = 0; i<6; i++) pp_lh[i] = pid.GetLike(i, tr1);
 				for(int i = 0; i<6; i++) pm_lh[i] = pid.GetLike(i, tr2);
