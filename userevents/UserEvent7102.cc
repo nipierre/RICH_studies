@@ -210,7 +210,7 @@ void UserEvent7102(PaEvent& e){
 	static Long64_t Evt;
 	static float vx, vy ,vz;
 	static double Q2, xbj, y;
-	static double Emiss;
+	static double Emiss, m_rho;
 	static TLorentzVector lv_beam, lv_scat, lv_pip, lv_pim, lv_rho;
 
 	static double pp_x, pp_y, pp_mom, pp_theta, pm_x, pm_y, pm_mom, pm_theta;
@@ -314,7 +314,7 @@ void UserEvent7102(PaEvent& e){
 
     const PaTrack& track_beam = e.vTrack(pa_beam.iTrack());
 		const PaTrack& track_scat = e.vTrack(pa_scat.iTrack());
-    int run = fEvent->RunNum();
+    int run = e.RunNum();
 
     if( !(PaAlgo::CrossCells(par_beam,run,1.9,1.2,-325,-71,1.9) && PaAlgo::InTarget(par_beam,'O',run,1.9,1.2,-325,-71,1.9)) ) continue;
 
