@@ -94,7 +94,7 @@ int main(int argc, char *argv[]){
 			fit_table_lambda(1); // p+
 		}
 
-	 	print_table();
+	 	// print_table();
 
 		return 0;
 	}
@@ -925,9 +925,13 @@ void get_input_data_rho(){
 
 	static TLorentzVector* lv_pim;
 	static TLorentzVector* lv_pip;
+	static TLorentzVector* lv_rho;
 
-	static double pp_theta,pm_theta, m_rho, nu;
+	static double pp_theta,pm_theta;
 	static double pi_thr, k_thr, p_thr, Emiss;
+	static TLorentzVector* lv_beam;
+	static TLorentzVector* lv_scat;
+	// static double m_rho = 0.776;
 	static int Nout;
 
 	static double pp_lh[7],pm_lh[7];
@@ -937,23 +941,27 @@ void get_input_data_rho(){
 	}
 
 	static double pp_x,  pp_y,  pm_x,  pm_y;
+	tree->SetBranchAddress("lv_beam",&lv_beam);
+	tree->SetBranchAddress("lv_scat",&lv_scat);
 	tree->SetBranchAddress("k_thr",&k_thr);
 	tree->SetBranchAddress("pi_thr",&pi_thr);
 	tree->SetBranchAddress("p_thr",&p_thr);
 	tree->SetBranchAddress("lv_pip",&lv_pip);
 	tree->SetBranchAddress("lv_pim",&lv_pim);
-	tree->SetBranchAddress("m_rho",&m_rho);
+	tree->SetBranchAddress("lv_rho",&lv_rho);
+	// tree->SetBranchAddress("m_rho",&m_rho);
 	tree->SetBranchAddress("pp_x",&pp_x);
 	tree->SetBranchAddress("pp_y",&pp_y);
 	tree->SetBranchAddress("pp_theta",&pp_theta);
 	tree->SetBranchAddress("pp_lh",&pp_lh);
+	// tree->SetBranchAddress("pt1",&pt1);
+	// tree->SetBranchAddress("alpha",&alpha);
 	tree->SetBranchAddress("pm_x",&pm_x);
 	tree->SetBranchAddress("pm_y",&pm_y);
 	tree->SetBranchAddress("pm_theta",&pm_theta);
 	tree->SetBranchAddress("pm_lh",&pm_lh);
 	tree->SetBranchAddress("Nout",&Nout);
 	tree->SetBranchAddress("Emiss",&Emiss);
-	tree->SetBranchAddress("nu",&nu);
 
 	cout << "Entries: "<< nentries1  << endl;
 	// cout << 2 << endl;
@@ -983,6 +991,8 @@ void get_input_data_rho(){
 
 	// TH1D* hde3 = new TH1D("hde3","",2000,-1,1);
 	// TH1D* hde4 = new TH1D("hde4","",2000,-1,1);
+
+	double m_rho = lv_rho->Mag();
 
 
 	for (Long64_t jentry=0; jentry<nentries1;jentry++) {
@@ -1088,8 +1098,8 @@ void get_input_data_rho(){
 		lv_kp.SetVectM(lv_pip->Vect(),0.493677);
 		lv_km.SetVectM(lv_pim->Vect(),0.493677);
 
-		double z_pim = lv_pim->E()/nu;
-		double z_pip = lv_pip->E()/nu;
+		double z_pim = lv_pim->E()/(lv_beam->E()-lv_scat->E());
+		double z_pip = lv_pip->E()/(lv_beam->E()-lv_scat->E());
 
 		double m_kstar_kp = (lv_kp + *lv_pim).Mag();
 		double m_kstar_km = (lv_km + *lv_pip).Mag();
@@ -1328,7 +1338,7 @@ void fit_table_k0(int cc){
 		for(int p = 0; p<Np; p++){
 // 	for(int p = 3; p<4; p++){
 // 		for(int t = 1; t<2; t++){
-			if(t==3 && p>6) continue;
+			if(p>12) continue;
 			cout << setw(7) << "theta:" << setw(3)<< t   << setw(7) << "mom:" << setw(3) << p << endl;
 			//Signal
 			RooRealVar x("x","M",0.44,0.56,"GeV");
@@ -1613,8 +1623,7 @@ void fit_table_k0(int cc){
 			if(cc == 1) c->Print("test_k0_1.pdf");
 
 
-			// if(p==Np-1 && t == Nt-1){
-			if(p== 6 && t == Nt-1){
+			if(p==Np-2 && t == Nt-2){
 				if(cc == 0) c->Print("test_k0_0.pdf]");
 				else if(cc == 1) c->Print("test_k0_1.pdf]");
 			}
@@ -2038,8 +2047,7 @@ void fit_table_phi(int cc){
 			if(cc == 1) c->Print("test_phi_1.pdf");
 
 
-			// if(p==Np-1 && t == Nt-1){
-			if(p== 6 && t == Nt-1){
+			if(p==Np-1 && t == Nt-1){
 				if(cc == 0) c->Print("test_phi_0.pdf]");
 				else if(cc == 1) c->Print("test_phi_1.pdf]");
 			}
@@ -2577,8 +2585,7 @@ void fit_table_lambda(int cc){
 			if(cc == 0) c->Print("test_lambda_0.pdf");
 			if(cc == 1) c->Print("test_lambda_1.pdf");
 
-			// if(p==Np-1 && t == Nt-1){
-			if(p== 6 && t == Nt-1){
+			if(p==Np-1 && t == Nt-1){
 				if(cc == 0) c->Print("test_lambda_0.pdf]");
 				else if(cc == 1) c->Print("test_lambda_1.pdf]");
 			}
@@ -2599,11 +2606,10 @@ void fit_table_rho(int cc){
 	for(int t = 0; t<Nt; t++){
 		for(int p = 0; p<Np; p++){
 
-			if(p!= 10 && p!=11) continue;
-			if(t!=1 && t!=2) continue;
+			if(!(p==13)) continue;
 // 	for(int p = 3; p<4; p++){
 // 		for(int t = 1; t<2; t++){
-			if(t==3 && p>6) continue;
+			// if(t==3 && p>6) continue;
 			cout << setw(7) << "theta:" << setw(3)<< t   << setw(7) << "mom:" << setw(3) << p << endl;
 			//Signal
 			RooRealVar x("x","M",550.,950,"MeV");
@@ -2688,47 +2694,47 @@ void fit_table_rho(int cc){
 			RooRealVar k0a("k0a","k0a",	-0.2,	-1.,	1.) ;
 			// RooRealVar k1a("k1a","k1a",	-0.3,	-1.,	1.) ;
 			// RooRealVar k2a("k2a","k2a",	0.,		-1.,	1.) ;
-// 			RooRealVar k3a("k3a","k3a",	0.2,	-1.,	1.) ;
-// 			RooRealVar k4a("k4a","k4a",	0.07,	-1.,	1.) ;
+			// RooRealVar k3a("k3a","k3a",	0.2,	-1.,	1.) ;
+			// RooRealVar k4a("k4a","k4a",	0.07,	-1.,	1.) ;
 			RooChebychev bgna("bgna","bgna",x,RooArgSet(k0a));//,k3a,k4a)) ;
 
 
-// 			RooRealVar k0pi("k0pi","k0pi",	-0.2,	-1.,	1.) ;
-// 			RooRealVar k1pi("k1pi","k1pi",	-0.3,	-1.,	1.) ;
-// 			RooRealVar k2pi("k2pi","k2pi",	0.,		-1.,	1.) ;
-// 			RooRealVar k3pi("k3pi","k3pi",	0.2,	-1.,	1.) ;
-// 			RooRealVar k4pi("k4pi","k4pi",	0.07,	-1.,	1.) ;
-// 			RooChebychev bgnpi("bgnpi","bgnpi",x,RooArgSet(k0pi,k1pi));//,k2pi,k3pi,k4pi)) ;
+			RooRealVar k0pi("k0pi","k0pi",	-0.2,	-1.,	1.) ;
+			RooRealVar k1pi("k1pi","k1pi",	-0.3,	-1.,	1.) ;
+			// RooRealVar k2pi("k2pi","k2pi",	0.,		-1.,	1.) ;
+			// RooRealVar k3pi("k3pi","k3pi",	0.2,	-1.,	1.) ;
+			// RooRealVar k4pi("k4pi","k4pi",	0.07,	-1.,	1.) ;
+			RooChebychev bgnpi("bgnpi","bgnpi",x,RooArgSet(k0pi,k1pi));//,k2pi,k3pi,k4pi)) ;
 
 			RooRealVar k0k("k0k","k0k",	-0.2,	-1.,	1.) ;
-// 			RooRealVar k1k("k1k","k1k",	-0.3,	-1.,	1.) ;
-// 			RooRealVar k2k("k2k","k2k",	0.,		-1.,	1.) ;
-// 			RooRealVar k3k("k3k","k3k",	0.2,	-1.,	1.) ;
-// 			RooRealVar k4k("k4k","k4k",	0.07,	-1.,	1.) ;
+			// RooRealVar k1k("k1k","k1k",	-0.3,	-1.,	1.) ;
+			// RooRealVar k2k("k2k","k2k",	0.,		-1.,	1.) ;
+			// RooRealVar k3k("k3k","k3k",	0.2,	-1.,	1.) ;
+			// RooRealVar k4k("k4k","k4k",	0.07,	-1.,	1.) ;
 			RooChebychev bgnk("bgnk","bgnk",x,RooArgSet(k0k));//,k2k));//,k3k,k4k)) ;
 
 			RooRealVar k0p("k0p","k0p",	-0.2,	-1.,	1.) ;
 			// RooRealVar k1p("k1p","k1p",	-0.4,	-1.,	1.) ;
 			// RooRealVar k2p("k2p","k2p",	0.08,	-1.,	1.) ;
-// 			RooRealVar k3p("k3p","k3p",	0.2,	-1.,	1.) ;
-// 			RooRealVar k4p("k4p","k4p",	0.07,	-1.,	1.) ;
+			// RooRealVar k3p("k3p","k3p",	0.2,	-1.,	1.) ;
+			// RooRealVar k4p("k4p","k4p",	0.07,	-1.,	1.) ;
 			RooChebychev bgnp("bgnp","bgnp",x,RooArgSet(k0p));//,k3p,k4p));
 
 			RooRealVar bmean("bmean","mean",650,550,800,"MeV") ;
 			RooRealVar bsigma("bsigma","sigma",34,15,50,"MeV");
 			RooGaussian bgauss("bgauss","gauss",x,bmean,bsigma) ;
 
-// 			RooRealVar k0u("k0u","k0u",	-0.2,	-1.,	1.) ;
-// 			RooRealVar k1u("k1u","k1u",	-0.3,	-1.,	1.) ;
-// 			RooRealVar k2u("k2u","k2u",	0.,		-1.,	1.) ;
-// 			RooRealVar k3u("k3u","k3u",	0.2,	-1.,	1.) ;
-// 			RooRealVar k4u("k4u","k4u",	0.07,	-1.,	1.) ;
-// 			RooChebychev bgnu("bgnu","bgnu",x,RooArgSet(k0u,k1u,k2u));//,k3u,k4u)) ;
+			RooRealVar k0u("k0u","k0u",	-0.2,	-1.,	1.) ;
+			RooRealVar k1u("k1u","k1u",	-0.3,	-1.,	1.) ;
+			RooRealVar k2u("k2u","k2u",	0.,		-1.,	1.) ;
+			// RooRealVar k3u("k3u","k3u",	0.2,	-1.,	1.) ;
+			// RooRealVar k4u("k4u","k4u",	0.07,	-1.,	1.) ;
+			RooChebychev bgnu("bgnu","bgnu",x,RooArgSet(k0u,k1u,k2u));//,k3u,k4u)) ;
 
 			//Construct composite pdf
 
 			Int_t ent = h[6+cc][0][p][t]->GetEntries(); //[p][t]
-// 			RooRealVar N_a_s("N_a_s","N_a_s",0.95*ent,0.,1.05*ent) ;
+			// RooRealVar N_a_s("N_a_s","N_a_s",0.95*ent,0.,1.05*ent) ;
 			RooRealVar N_a_b("N_a_b","N_a_b",0.05*ent,0.,1.05*ent) ;
 
 			ent = h[6+cc][1][p][t]->GetEntries(); //[p][t]
@@ -2749,10 +2755,10 @@ void fit_table_rho(int cc){
 			RooRealVar N_u_s("N_u_s","N_u_s",0.8*ent,0.,1.05*ent) ;
 			RooRealVar N_u_b("N_u_b","N_u_b",0.05*ent,0.,1.05*ent) ;
 
-			if(cc == 1 && t==2 && p >Np-4){
+			// if(cc == 1 && t==2 && p >Np-4){
 				// cout << cc << " " << t << " " << p << endl;
-				N_p_s.setVal(0.);
-			}
+			// 	N_p_s.setVal(0.);
+			// }
 
 			RooRealVar frac_s("frac_s","frac_s",0.65,0.5,0.7) ; //
 			RooAddPdf sig("sig","sig",RooArgList(gauss1,gauss2),frac_s) ;
@@ -3021,21 +3027,16 @@ void fit_table_rho(int cc){
 			pa[4]->cd() ; frame5->Draw() ;
 			pa[5]->cd() ; frame6->Draw() ;
 
-			// if(p==0 && t == 0){
-			if(p== 10 && t == 1){
+			if(p== 13 && t == 0){
 				if(cc == 0) c->Print("test_rho0_pim.pdf[");
 				else if(cc == 1) c->Print("test_rho0_pip.pdf[");
 			}
-
-
 
 			if(cc == 0) c->Print("test_rho0_pim.pdf");
 			if(cc == 1) c->Print("test_rho0_pip.pdf");
 
 
-			// if(p==Np-1 && t == Nt-1){
-			// if(p== 6 && t == Nt-1){
-			if(p== 11 && t == 2){
+			if(p== 13 && t == 1){
 				if(cc == 0) c->Print("test_rho0_pim.pdf]");
 				else if(cc == 1) c->Print("test_rho0_pip.pdf]");
 			}
@@ -3046,15 +3047,15 @@ void fit_table_rho(int cc){
 
 /**********************************************************************/
 void print_table(){
-	if(start<=0 && stop >2){
-		input_k0->Close();
-	}else if(start<=2 && stop >4){
-		input_lam->Close();
-	}else if(start<=4 && stop >6){
-		input_phi->Close();
-	}else if(start<=6 && stop >8){
-		input_rho->Close();
-	}
+	// if(start<=0 && stop >2){
+	// 	input_k0->Close();
+	// }else if(start<=2 && stop >4){
+	// 	input_lam->Close();
+	// }else if(start<=4 && stop >6){
+	// 	input_phi->Close();
+	// }else if(start<=6 && stop >8){
+	// 	input_rho->Close();
+	// }
 	TGraphErrors* gr[8][4][Nt];
 
 	TGraph* grC[8][Nt];

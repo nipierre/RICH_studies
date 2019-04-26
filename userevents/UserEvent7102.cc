@@ -254,6 +254,7 @@ void UserEvent7102(PaEvent& e){
 		tree->Branch("lv_pip",			"TLorentzVector", 	&lv_pip);
 		tree->Branch("lv_pim",			"TLorentzVector", 	&lv_pim);
 		tree->Branch("lv_rho",			"TLorentzVector", 	&lv_rho);
+    tree->Branch("m_rho",       "TLorentzVector",   &m_rho);
 
 		tree->Branch("pp_pt",			&pp_pt,				"pp_pt/D");
 		tree->Branch("pm_pt",			&pm_pt,				"pm_pt/D");
@@ -313,8 +314,9 @@ void UserEvent7102(PaEvent& e){
 
     const PaTrack& track_beam = e.vTrack(pa_beam.iTrack());
 		const PaTrack& track_scat = e.vTrack(pa_scat.iTrack());
+    int run = fEvent->RunNum();
 
-    if( !(fTcell->TargetCell::CrossCells(track_beam) && fTcell->TargetCell::InTarget(VertexMu0,1.9)) ) continue;
+    if( !(PaAlgo::CrossCells(par_beam,run,1.9,1.2,-325,-71,1.9) && PaAlgo::InTarget(par_beam,'O',run,1.9,1.2,-325,-71,1.9)) ) continue;
 
 		vx = v.X();
 		vy = v.Y();
@@ -388,6 +390,8 @@ void UserEvent7102(PaEvent& e){
 
 				if( TMath::Abs(lv_rho.Mag() - m_rho) >=0.25) continue;
 				if( (lv_kp+lv_km).Mag() <1.04) continue;
+
+        m_rho = lv_rho.Mag();
 
 				for(int i = 0; i<6; i++) pp_lh[i] = pid.GetLike(i, tr1);
 				for(int i = 0; i<6; i++) pm_lh[i] = pid.GetLike(i, tr2);

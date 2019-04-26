@@ -1,13 +1,23 @@
-# data file containing the reconstructed informations
-data_file: ../in_root06/rho/2006_rho_small.root
+# type of analysis (K0L, iPhi or Rho)
+analysis: Rho
 
-# data file containing the histograms
-hist_file: hist.root
+# data file containing the reconstructed informations
+data_file: ../Richrho
+
+# data file template name
+data_template: richrho
+
+# data file template name
+data_firstfile_nb: 274508
+data_lastfile_nb: 276408
+
+# Fit type
+fit_type: all
 
 # data file containing the histograms
 hist_file_phi: ./hist_incl_phi2.root
-hist_file_k0: ./hist_k0_lambda.root
-hist_file_lam: ./hist_k0_lambda.root
+hist_file_k0: ./hist_k0.root
+hist_file_lam: ./hist_lambda.root
 hist_file_rho: ./hist_rho_1.root
 
 # z cuts for rho0
@@ -24,8 +34,8 @@ remove_richpipe: true
 thr_diff: 5
 
 # Options for LH cuts for identifying pions
-LH_pi_K: 1.0
-LH_pi_p: 1.0
+LH_pi_K: 1.02
+LH_pi_p: 1.02
 # LH_pi_e:
 # LH_pi_mu:
 LH_pi_bg: 2.02

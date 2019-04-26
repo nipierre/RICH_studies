@@ -2744,10 +2744,9 @@ void fit_table_rho(int cc){
 	for(int t = 0; t<Nt; t++){
 		for(int p = 0; p<Np; p++){
 
-			// if(p!= 10) continue;
-			// if(t!=1 ) continue;
-			// 
-			// if(t==3 && p>6) continue;
+			if(!(p==13)) continue;
+			if(!(t==1 || t==2)) continue;
+			//
 
 			cout << setw(7) << "theta:" << setw(3)<< t   << setw(7) << "mom:" << setw(3) << p << endl;
 			//Signal

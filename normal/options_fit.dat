@@ -1,11 +1,11 @@
 # type of analysis (K0L or iPhi)
-analysis: K0L
+analysis: iPhi
 
 # data file containing the reconstructed informations
-data_file: ../RichKL
+data_file: ../RichiP
 
 # data file template name
-data_template: RichKL
+data_template: RichiP
 
 # data file template name
 data_firstfile_nb: 274508
@@ -29,19 +29,19 @@ remove_richpipe: true
 thr_diff: 5
 
 # Options for LH cuts for identifying pions
-LH_pi_K: 1.0
-LH_pi_p: 1.0
+LH_pi_K: 1.02
+LH_pi_p: 1.02
 # LH_pi_e:
 # LH_pi_mu:
-LH_pi_bg: 1.0
+LH_pi_bg: 2.02
 
 
 # Options for LH cuts for identifying kaons
 LH_K_pi: 1.08
-LH_K_p: 1.0
+LH_K_p: 1.08
 # LH_K_e:
 # LH_K_mu:
-LH_K_bg: 1.24
+LH_K_bg: 2.08
 
 
 # Options for LH cuts for identifying protons below threshold ( comparing with bg )

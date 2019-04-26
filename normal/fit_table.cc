@@ -354,7 +354,14 @@ void write_hist(){
 	}
 
 	TCanvas* c = new TCanvas("c","",800,600);
-	test_hist->Draw("col");
+	gStyle->SetPalette(kRainBow);
+  test_hist->SetStats(0);
+	test_hist->Draw("colz");
+	TLine l1(-1,0.023,1,0.023);
+	l1.SetLineStyle(9);
+	l1.SetLineColor(2);
+	l1.SetLineWidth(4);
+	l1.Draw("SAME");
 	c->Print("test.C");
 	c->Print("test.pdf");
 
@@ -2268,6 +2275,22 @@ void print_table(){
 						double ggg = N_id[i][1][p][t]+N_id[i][2][p][t]+N_id[i][3][p][t]+N_id[i][4][p][t];
 						val = (ggg ? aaa/ggg : 0);
 
+						// double tmp_jak[4];
+						//
+						// for(int ll=0; ll<4;ll++){
+						// 	tmp_jak[ll] = -aaa/(ggg*ggg);
+						// 	if(ll == j-1) tmp_jak[ll] += 1./ggg;
+						// }
+						//
+						ofs_matrix << "\t" << val;
+						// ofs_err << "\t" << tmp_jak[0]*tmp_jak[0]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[0])
+						// 				<< "\t" << tmp_jak[1]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[1])
+						// 				<< "\t" << tmp_jak[2]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[2],cov_elem[2]);
+						// ofs_err << "\t" << tmp_jak[0]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[1])
+						// 				<< "\t" << tmp_jak[0]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[2])
+						// 				<< "\t" << tmp_jak[1]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[2]);
+						double tmp = 0.;
+
 						double tmp_jak[4];
 
 						for(int ll=0; ll<4;ll++){
@@ -2275,13 +2298,15 @@ void print_table(){
 							if(ll == j-1) tmp_jak[ll] += 1./ggg;
 						}
 
-						ofs_matrix << "\t" << val;
-						ofs_err << "\t" << tmp_jak[0]*tmp_jak[0]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[0])
-										<< "\t" << tmp_jak[1]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[1])
-										<< "\t" << tmp_jak[2]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[2],cov_elem[2]);
-						ofs_err << "\t" << tmp_jak[0]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[1])
-										<< "\t" << tmp_jak[0]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[2])
-										<< "\t" << tmp_jak[1]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[2]);
+						for(int ll = 0; ll<4;ll++) tmp += tmp_jak[ll]*tmp_jak[ll]*r[i][p][t]->covarianceMatrix()(cov_elem[ll],cov_elem[ll]);
+
+						for(int ll = 0; ll<3; ll++){
+							for(int hh = ll+1; hh<4; hh++){
+								tmp += tmp_jak[ll]*tmp_jak[hh]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[ll],cov_elem[hh]);
+							}
+						}
+
+						ofs_err << "\t" << TMath::Sqrt(tmp);
 					}
 				}
 				ofs_matrix << endl;
