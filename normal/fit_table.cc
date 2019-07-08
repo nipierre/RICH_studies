@@ -2411,11 +2411,12 @@ void print_table(){
 	leg->SetLineColor(0);
 	leg->SetNColumns(1);
 	leg->SetFillStyle(0);
+	leg->SetTextSize(0.04);
 
 
 	for(int t = 0; t< Nt; t++){
 		nn.str("");
-		nn << t_bins[t] <<"#leq #theta < " << t_bins[t+1];
+		nn << t_bins[t] <<" #leq #theta < " << t_bins[t+1];
 		leg->AddEntry(gr[start][0][t],nn.str().c_str(),"pl");
 	}
 
@@ -2478,9 +2479,9 @@ void print_table(){
 			TH1F* hr = c->DrawFrame(0.,min[i/2][j-1],50.,max[i/2][j-1]);
 			hr->GetXaxis()->SetTitle("p (GeV/c)");
 			nn.str("");
-			nn << lable[i] <<" #rightarrow " << lable[2*(j-1)+i%2];//;id2[j-1];
-			hr->SetTitle(nn.str().c_str());
-			leg->Draw();
+			nn << "#epsilon (" << lable[i] <<" #rightarrow " << lable[2*(j-1)+i%2] << ")";//;id2[j-1];
+			hr->GetYaxis()->SetTitle(nn.str().c_str());
+			if(j==4) leg->Draw();
 			for(int t = 0 ; t< Nt; t++) gr[i][j-1][t]->Draw("pl");
 			nn.str("");
 			if(i%2 == 0) nn << "table/" << id[i/2] <<"/" << id[i/2] << "m_" << id[j-1] <<".pdf";
