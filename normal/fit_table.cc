@@ -2275,14 +2275,15 @@ void print_table(){
 							if(ll == j-1) tmp_jak[ll] += 1./ggg;
 						}
 
-						ofs_matrix << "\t" << val;
-						ofs_err << "\t" << tmp_jak[0]*tmp_jak[0]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[0])
-										<< "\t" << tmp_jak[1]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[1])
-										<< "\t" << tmp_jak[2]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[2],cov_elem[2]);
-						ofs_err << "\t" << tmp_jak[0]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[1])
-										<< "\t" << tmp_jak[0]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[2])
-										<< "\t" << tmp_jak[1]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[2]);
 					}
+					
+					ofs_matrix << "\t" << val;
+					ofs_err << "\t" << tmp_jak[0]*tmp_jak[0]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[0])
+									<< "\t" << tmp_jak[1]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[1])
+									<< "\t" << tmp_jak[2]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[2],cov_elem[2]);
+					ofs_err << "\t" << tmp_jak[0]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[1])
+									<< "\t" << tmp_jak[0]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[2])
+									<< "\t" << tmp_jak[1]*tmp_jak[2]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[2]);
 				}
 				ofs_matrix << endl;
 				ofs_err << endl;
