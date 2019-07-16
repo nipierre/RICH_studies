@@ -2276,7 +2276,6 @@ void print_table(){
 						}
 
 					}
-					
 					ofs_matrix << "\t" << val;
 					ofs_err << "\t" << tmp_jak[0]*tmp_jak[0]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[0],cov_elem[0])
 									<< "\t" << tmp_jak[1]*tmp_jak[1]*2.*r[i][p][t]->covarianceMatrix()(cov_elem[1],cov_elem[1])
